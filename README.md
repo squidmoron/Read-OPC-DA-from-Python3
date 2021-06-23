@@ -4,7 +4,7 @@ Read OPC DA from Python3
 If you need to Read variable data from OPC DA used python3 and Windows 10
 You can follow the instruction below:
 
-1) Install Python3.9 32bit
+1) Install Python3.9 32bit i used Python3.9.5 32bit https://www.python.org/ftp/python/3.9.5/python-3.9.5.exe
 
 2) Add Path of Python3.9 and pip in folder /Script
 
