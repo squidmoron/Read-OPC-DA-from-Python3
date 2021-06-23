@@ -21,7 +21,8 @@ from win10toast import ToastNotifier
 #toaster.show_toast("Python for Read OPC DA","Reading OPC DA",duration=25)
 
 #--------------------------Variable All----------------------------------
-host ='Matrikon.OPC.Simulation'
+#host ='Matrikon.OPC.Simulation'
+host  ='CoDeSys.OPC.DA'
 pywintypes.datetime = pywintypes.TimeType
 opc = OpenOPC.client()
 
@@ -30,11 +31,13 @@ opc = OpenOPC.client()
 #x=opc.read('Random.Real8')
 #print(x)
 
-AVG_CTArm				=''
-AVG_CTFront			=''
-AVG_CTBack			=''
-AVG_CTNeck			=''
-AVG_CTConnector	=''
+AVG_CTArmAssy =""
+AVG_CTDipping =""
+AVG_CTFrontTorso =""
+AVG_CTHipConnector =""
+AVG_CTLegAssy =""
+AVG_CTNeckConnector =""
+AVG_CTUnload =""
 
 #------------------------------------------------------------------------
 class dataOPC:
@@ -62,7 +65,13 @@ def readOPC(variable) :
 
 while 1 :
 	try:
-		AVG_CTArm=readOPC('Random.Real8')
+		AVG_CTArmAssy=readOPC('PLC_GW3..AVG_CTArmAssy')
+		AVG_CTDipping=readOPC('PLC_GW3..AVG_CTDipping')
+		AVG_CTFrontTorso=readOPC('PLC_GW3..AVG_CTFrontTorso')
+		AVG_CTHipConnector=readOPC('PLC_GW3..AVG_CTHipConnector')
+		AVG_CTLegAssy=readOPC('PLC_GW3..AVG_CTLegAssy')
+		AVG_CTNeckConnector=readOPC('PLC_GW3..AVG_CTNeckConnector')
+		AVG_CTUnload=readOPC('PLC_GW3..AVG_CTUnload')
 		print(AVG_CTArm.value)
 	except:
 		print("Can not read opc data or data equal to Not Good")
