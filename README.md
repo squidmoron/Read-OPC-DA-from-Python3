@@ -31,3 +31,4 @@ To communication from python to SQL Server you need to install PyODBC library
 	Successfully installed pyodbc-4.0.30
 
 4) You got your library for pyodbc
+
