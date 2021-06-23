@@ -1,5 +1,5 @@
 # Read-OPC-DA-from-Python3
-Read OPC DA from Python3
+![alt_text](https://raw.githubusercontent.com/squidmoron/Read-OPC-DA-from-Python3/main/opclogo.png?raw=true)
 
 If you need to Read variable data from OPC DA used python3 and Windows 10
 You can follow the instruction below:
