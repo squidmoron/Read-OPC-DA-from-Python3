@@ -18,7 +18,8 @@ from influxdb import InfluxDBClient
 from win10toast import ToastNotifier
 
 #--------------------------Variable All----------------------------------
-host ='Matrikon.OPC.Simulation'
+#host ='Matrikon.OPC.Simulation'
+host ='CoDeSys.OPC.DA'
 pywintypes.datetime = pywintypes.TimeType
 opc = OpenOPC.client()
 
