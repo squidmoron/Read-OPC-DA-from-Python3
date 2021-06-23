@@ -22,7 +22,7 @@ Install Matrikon OPC Explorer
 
 To communication from python to SQL Server you need to install PyODBC library
 
-1) copy file "pyodbc-4.0.30-cp39-cp39-win32.whl"
+1) copy file "pyodbc-4.0.30-cp39-cp39-win32.whl" you can search on //folder "Python odbc library"
 
 2) open shell and run : pip install <PATH>\pyodbc-4.0.30-cp39-cp39-win32.whl
 
