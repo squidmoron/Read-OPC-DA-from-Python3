@@ -61,4 +61,4 @@ while 1 :
 		print(AVG_CTArm.value)
 	except:
 		print("Can not read opc data or data equal to Not Good")
-	time.sleep(1)
+	time.sleep(.1)
