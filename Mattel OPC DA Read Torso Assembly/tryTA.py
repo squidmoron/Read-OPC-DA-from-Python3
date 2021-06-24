@@ -15,7 +15,7 @@ import pywintypes
 import influxdb
 import json
 from influxdb import InfluxDBClient
-from win10toast import ToastNotifier
+#from win10toast import ToastNotifier
 #toaster = ToastNotifier()
 
 #toaster.show_toast("Python for Read OPC DA","Reading OPC DA",duration=25)
@@ -27,9 +27,17 @@ pywintypes.datetime = pywintypes.TimeType
 opc = OpenOPC.client()
 
 #-----for trial read data opc
-#opc.connect(host)
-#x=opc.read('Random.Real8')
-#print(x)
+opc.connect(host)
+x=opc.read('PLC_GW3..FrontTorso_TimeOut')
+print(x)
+
+DT_CountDipping =""
+DT_CountLeg =""
+DT_CountArm =""
+DT_CountFrontTorso =""
+DT_CountHipConnector =""
+DT_CountUnloading =""
+DT_CountNeck =""
 
 AVG_CTArmAssy =""
 AVG_CTDipping =""
@@ -38,6 +46,8 @@ AVG_CTHipConnector =""
 AVG_CTLegAssy =""
 AVG_CTNeckConnector =""
 AVG_CTUnload =""
+
+FrontTorso_TimeOut=''
 
 #------------------------------------------------------------------------
 class dataOPC:
@@ -72,7 +82,32 @@ while 1 :
 		AVG_CTLegAssy=readOPC('PLC_GW3..AVG_CTLegAssy')
 		AVG_CTNeckConnector=readOPC('PLC_GW3..AVG_CTNeckConnector')
 		AVG_CTUnload=readOPC('PLC_GW3..AVG_CTUnload')
-		print(AVG_CTArm.value)
+
+		DT_CountDipping=readOPC('PLC_GW3..DT_CountDipping')
+		DT_CountLeg=readOPC('PLC_GW3..DT_CountLeg')
+		DT_CountArm=readOPC('PLC_GW3..DT_CountArm')
+		DT_CountFrontTorso=readOPC('PLC_GW3..DT_CountFrontTorso')
+		DT_CountHipConnector=readOPC('PLC_GW3..DT_CountHipConnector')
+		DT_CountUnloading=readOPC('PLC_GW3..DT_CountUnloading')
+
+		FrontTorso_TimeOut=readOPC('PLC_GW3..FrontTorso_TimeOut')
+
+		print(AVG_CTArmAssy.value)
+		print(AVG_CTDipping.value)
+		print(AVG_CTFrontTorso.value)
+		print(AVG_CTHipConnector.value)
+		print(AVG_CTLegAssy.value)
+		print(AVG_CTNeckConnector.value)
+		print(AVG_CTUnload.value)
+
+		print(DT_CountDipping.value)
+		print(DT_CountLeg.value)
+		print(DT_CountArm.value)
+		print(DT_CountFrontTorso.value)
+		print(DT_CountHipConnector.value)
+		print(DT_CountUnloading.value)
+		print(FrontTorso_TimeOut.value)
+		print("==================================================")
 	except:
 		print("Can not read opc data or data equal to Not Good")
-	time.sleep(.1)
+	time.sleep(2)
