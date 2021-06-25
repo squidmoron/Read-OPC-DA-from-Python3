@@ -38,10 +38,10 @@ AVG_CTConnector	=''
 
 #------------------------------------------------------------------------
 class dataOPC:
-  def __init__(self, value, quality, datetime):
-    self.value = value
-    self.quality = quality
-    self.datetime = datetime
+  def __init__(self, valueOPC, qualityOPC, datetimeOPC):
+    self.valueOPC = valueOPC
+    self.qualityOPC = qualityOPC
+    self.datetimeOPC = datetimeOPC
 #------------------------------------------------------------------------
 def parsing(x):
   x=x.replace(' ','').replace("'","").replace('(','').replace(')','')
@@ -53,7 +53,7 @@ def readOPC(variable) :
 	try	:
 		value=parsing(str(opc.read(variable)))
 		value=dataOPC(value[0],value[1],value[2])
-		if(value.quality=="Good"):
+		if(value.qualityOPC=="Good"):
 			return value
 	except :
 		print("============================= read problem =============================")
@@ -63,7 +63,7 @@ def readOPC(variable) :
 while 1 :
 	try:
 		AVG_CTArm=readOPC('Random.Real8')
-		print(round(float(AVG_CTArm.value),2))
+		print(round(float(AVG_CTArm.valueOPC),2))
 	except:
 		print("Can not read opc data or data equal to Not Good")
 	time.sleep(.1)
