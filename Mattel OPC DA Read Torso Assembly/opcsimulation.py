@@ -26,9 +26,9 @@ pywintypes.datetime = pywintypes.TimeType
 opc = OpenOPC.client()
 
 #-----for trial read data opc
-#opc.connect(host)
-#x=opc.read('Random.Real8')
-#print(x)
+opc.connect(host)
+x=opc.read('Random.Real8')
+print(x)
 
 AVG_CTArm				=''
 AVG_CTFront			=''
@@ -63,7 +63,7 @@ def readOPC(variable) :
 while 1 :
 	try:
 		AVG_CTArm=readOPC('Random.Real8')
-		print(AVG_CTArm.value)
+		print(round(float(AVG_CTArm.value),2))
 	except:
 		print("Can not read opc data or data equal to Not Good")
 	time.sleep(.1)
