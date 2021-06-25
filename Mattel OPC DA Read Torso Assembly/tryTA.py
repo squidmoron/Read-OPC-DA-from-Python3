@@ -93,6 +93,14 @@ def readOPC(variable) :
 
 def readavgCT() :
 	try:
+		global AVG_CTArmAssy
+		global AVG_CTDipping
+		global AVG_CTFrontTorso
+		global AVG_CTHipConnector
+		global AVG_CTLegAssy
+		global AVG_CTNeckConnector
+		global AVG_CTUnload
+
 		AVG_CTArmAssy=readOPC('PLC_GW3..AVG_CTArmAssy')
 		AVG_CTDipping=readOPC('PLC_GW3..AVG_CTDipping')
 		AVG_CTFrontTorso=readOPC('PLC_GW3..AVG_CTFrontTorso')
@@ -138,6 +146,17 @@ def readDTCount() :
 
 def readDTStation() :
 	try:
+		global GVI_DownTimeFrontTorso
+		global GVI_DownTimeHip
+		global GVI_DownTimeArm
+		global GVI_DownTimeNeck
+		global GVI_DownTimeDipping
+		global GVI_DownTimeLeg
+		global GVI_TotalCycleTime
+		global GVI_ResetValue
+		global Gv_DownTime
+		global GV_IntDownTime
+
 		GVI_DownTimeFrontTorso=readOPC('PLC_GW3..GVI_DownTimeFrontTorso')
 		GVI_DownTimeHip=readOPC('PLC_GW3..GVI_DownTimeHip')
 		GVI_DownTimeArm=readOPC('PLC_GW3..GVI_DownTimeArm')
@@ -199,24 +218,30 @@ def checktime():
 	now = datetime.now()
 	current_time = now.strftime("%H:%M:%S")
 	print("Current Time =", current_time)
-	time.sleep(.01)
-	#SHIFT 2
+
+	#-----------------------------------SHIFT 2
 	if (current_time >= "15:39:00") and (current_time < "15:41:00") and flag==0 :
 		print("send to DB Per Shift is Processing")
-		#sendDB_DTCount(1,DT_CountDipping.value,DT_CountLeg.value,DT_CountArm.value,DT_CountFrontTorso.value,DT_CountHipConnector.value,DT_CountUnloading.value)
+		sendDB_DTCount(1,DT_CountDipping.value,DT_CountLeg.value,DT_CountArm.value,DT_CountFrontTorso.value,DT_CountHipConnector.value,DT_CountUnloading.value)
 		print("send to DB is Done")
 		flag=1
 	elif (current_time >= "15:41:00") and (current_time < "22:39:00") :
 		flage=0
-	#SHIFT 3
+
+	#-----------------------------------SHIFT 3
 	if (current_time >= "22:39:00") and (current_time < "22:41:00") and flag==0 :
 		print("send to DB Per Shift is Processing")
+		sendDB_DTCount(1,DT_CountDipping.value,DT_CountLeg.value,DT_CountArm.value,DT_CountFrontTorso.value,DT_CountHipConnector.value,DT_CountUnloading.value)
+		print("send to DB is Done")
 		flag=1
 	elif (current_time >= "22:41:00") and (current_time < "07:09:00") :
 		flage=0
-	#SHIFT 1
+
+	#-----------------------------------SHIFT 1
 	if (current_time >= "07:09:00") and (current_time < "07:11:00") and flag==0 :
 		print("send to DB Per Shift is Processing")
+		sendDB_DTCount(1,DT_CountDipping.value,DT_CountLeg.value,DT_CountArm.value,DT_CountFrontTorso.value,DT_CountHipConnector.value,DT_CountUnloading.value)
+		print("send to DB is Done")
 		flag=1
 	elif (current_time >= "07:11:00") and (current_time < "15:39:00") :
 		flage=0
