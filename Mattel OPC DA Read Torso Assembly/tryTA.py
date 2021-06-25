@@ -120,7 +120,7 @@ def readDTCount() :
 		print(DT_CountArm.value)
 		print(DT_CountFrontTorso.value)
 		print(DT_CountHipConnector.value)
-		print(DT_CountUnloading.value)		
+		print(DT_CountUnloading.value)
 	except:
 		print("Can not read opc DT_Count data or data equal to Not Good")
 #------------------------------------------------------------------------
@@ -156,4 +156,3 @@ while 1:
 	readavgCT()
 	readDTCount()
 	readDTStation()
-		
