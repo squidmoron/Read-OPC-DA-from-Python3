@@ -22,6 +22,10 @@ from influxdb import InfluxDBClient
 
 #toaster.show_toast("Python for Read OPC DA","Reading OPC DA",duration=25)
 
+import pyodbc 
+conn = pyodbc.connect(driver='{SQL Server}', host='WCKR00157338\SQLEXPRESS', database='TA', user='sa', password='Mattel@123')
+cursor = conn.cursor() #--- Set Database MS SQL Server
+
 #--------------------------Variable All----------------------------------
 #host ='Matrikon.OPC.Simulation'
 host  ='CoDeSys.OPC.DA'
@@ -32,6 +36,8 @@ opc = OpenOPC.client()
 opc.connect(host)
 x=opc.read('PLC_GW3..FrontTorso_TimeOut')
 print(x)
+
+shift=''
 
 DT_CountDipping =""
 DT_CountLeg =""
@@ -211,6 +217,7 @@ def sendDB_DTCount(MC,dipping,leg,arm,fronttorso,hipconnector,unloading):
 #------------------------------------------------------------------------
 
 def checktime():
+	global shift
 	now = datetime.now()
 	current_time = now.strftime("%H:%M:%S")
 	print("Current Time =", current_time)
@@ -221,16 +228,16 @@ def checktime():
 		sendDB_DTCount(1,DT_CountDipping.value,DT_CountLeg.value,DT_CountArm.value,DT_CountFrontTorso.value,DT_CountHipConnector.value,DT_CountUnloading.value)
 		print("send to DB is Done")
 		flag=1
-	elif (current_time >= "15:41:00") and (current_time < "22:39:00") :
+	elif (current_time >= "15:41:00") and (current_time < "22:29:00") :
 		flage=0
 
 	#-----------------------------------SHIFT 3
-	if (current_time >= "22:39:00") and (current_time < "22:41:00") and flag==0 :
+	if (current_time >= "22:29:00") and (current_time < "22:31:00") and flag==0 :
 		print("send to DB Per Shift is Processing")
 		sendDB_DTCount(1,DT_CountDipping.value,DT_CountLeg.value,DT_CountArm.value,DT_CountFrontTorso.value,DT_CountHipConnector.value,DT_CountUnloading.value)
 		print("send to DB is Done")
 		flag=1
-	elif (current_time >= "22:41:00") and (current_time < "07:09:00") :
+	elif (current_time >= "22:31:00") and (current_time < "07:09:00") :
 		flage=0
 
 	#-----------------------------------SHIFT 1
@@ -241,6 +248,14 @@ def checktime():
 		flag=1
 	elif (current_time >= "07:11:00") and (current_time < "15:39:00") :
 		flage=0
+#----------------------------WRITE SHIFT--------------------------------
+	if (current_time >= "15:40:00") and (current_time < "22:40:00") :
+		shift='S3'
+	elif (current_time >= "22:40:00") and (current_time < "07:10:00") :
+		shift='S1'
+	elif (current_time >= "22:41:00") and (current_time < "07:09:00") :
+		shift='S2'
+
 #------------------------------------------------------------------------
 
 while 1:
