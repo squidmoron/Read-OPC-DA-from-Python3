@@ -1,0 +1,430 @@
+'Variables available only for this group can be declared here.
+Dim DownReason(11), drReason(9),mch(11),po,r
+Dim DownMachine(9), res(9), i,j,k,l,m,n ,tp , f ,nn
+Dim lowquality(5), lowmachine(5), q,qq,s,t,qw
+Dim Reject(18), TypeReject(18), z, v, o 
+Dim slowp(3), mchsperf(3),sp
+Dim dwnDur(3),mm(3),b,c
+Dim fastp(3), mchfperf(3), fp, w,x,bb
+
+
+'The code configured here is executed while the condition configured in the Execution field is TRUE.
+'-----------------------------------------------------------------------------------Top Down Reason--------------------------------------------------------------------------------------------------'
+
+For po = 0 To 2
+If ($machStatus[po].startUp <>0 ) Then		
+	
+DownReason(0) = $TimeProb[po].FrontTorso
+DownReason(1) = $TimeProb[po].HipConnector
+DownReason(2) = $TimeProb[po].Arm
+DownReason(3) = $TimeProb[po].NeckConnector
+DownReason(4) = $TimeProb[po].RearTorsoDipping
+DownReason(5) = $TimeProb[po].Leag
+DownReason(6) = $TimeProb[po].Unloading
+DownReason(7) = $TimeProb[po].PM
+DownReason(8) = $TimeProb[po].idle
+DownReason(9) = $TimeProb[po].ChangeOver
+DownReason(10) = $TimeProb[po].EmergencyDur
+
+End If
+
+Next
+
+DownReason(0) = DownReason(0)/60
+DownReason(1) = DownReason(1)/60
+DownReason(2) = DownReason(2)/60
+DownReason(3) = DownReason(3)/60
+DownReason(4) = DownReason(4)/60
+DownReason(5) = DownReason(5)/60
+DownReason(6) = DownReason(6)/60
+DownReason(7) = DownReason(7)/60
+DownReason(8) = DownReason(8)/60
+DownReason(9) = DownReason(9)/60
+DownReason(10) = DownReason(10)/60
+
+mch(0) = "Front Torso"
+mch(1) = "Hip Connector"
+mch(2) = "Arm"
+mch(3) = "Neck Connector"
+mch(4) = "Rear Torso Dipping"
+mch(5) = "Leg"
+mch(6) = "Unloading"
+mch(7) = "PM"
+mch(8) = "Idle"
+mch(9) = "Changeover"
+mch(10) = "Emergency"
+	
+
+For i=0 To 10
+	For j = 0 To 9
+	  If (DownReason(j) > DownReason(j+1)) Then
+	  	Dim tmpdr1, tmpdr2
+	  	tmpdr1 = DownReason(j+1)
+	  	DownReason(j+1) = DownReason(j)
+	  	DownReason(j) = tmpdr1
+	  	
+	  	tmpdr2 = mch(j+1)
+	  	mch(j+1) = mch(j)
+	  	mch(j) = tmpdr2
+	  	
+	  End If
+	Next
+Next
+
+$machChart[0].barTopDownReason = DownReason(10)
+$machChart[1].barTopDownReason = DownReason(9)
+$machChart[2].barTopDownReason = DownReason(8)
+$machChart[3].barTopDownReason = DownReason(7)
+$machChart[4].barTopDownReason = DownReason(5)
+
+$machChart[0].resTopDownReason = mch(10)
+$machChart[1].resTopDownReason = mch(9)
+$machChart[2].resTopDownReason = mch(8)
+$machChart[3].resTopDownReason = mch(7)
+$machChart[4].resTopDownReason = mch(5)
+
+'----------------------------------------------------------------------------------------------------Top Down Machine------------------------------------------------------------------------------------'
+
+For m=0 To 9
+	For n = 0 To 8
+	  If (DownMachine(n) > DownMachine(n+1)) Then
+	  	Dim tmp, tmpr, tmprr
+	  	tmp = DownMachine(n+1)
+	  	DownMachine(n+1) = DownMachine(n)
+	  	DownMachine(n) = tmp
+	  	
+	  	tmprr = res(n+1)
+	  	res(n+1)=res(n)
+	  	res(n)=tmprr
+	  	
+	  	tmpr = mch(n+1)
+	  	mch(n+1) = mch(n)
+	  	mch(n) = tmpr
+	  	
+	  End If
+	Next
+Next
+
+
+$machChart[0].barTopDownMachine = DownMachine(0)/60
+$machChart[1].barTopDownMachine = DownMachine(1)/60
+$machChart[2].barTopDownMachine = DownMachine(2)/60
+$machChart[3].barTopDownMachine = DownMachine(3)/60
+$machChart[4].barTopDownMachine = DownMachine(4)/60
+
+$machChart[0].mchTopDownMachine = mch(0)
+$machChart[1].mchTopDownMachine = mch(1)
+$machChart[2].mchTopDownMachine = mch(2)
+$machChart[3].mchTopDownMachine = mch(3)
+$machChart[4].mchTopDownMachine = mch(4)
+
+$machChart[0].resTopDownMachine = res(0)
+$machChart[1].resTopDownMachine = res(1)
+$machChart[2].resTopDownMachine = res(2)
+$machChart[3].resTopDownMachine = res(3)
+$machChart[4].resTopDownMachine = res(4)
+'----------------------------------------------------------------------------------------------------OEE Calculation------------------------------------------------------------------------------------'
+Dim machine
+Dim utmp
+Dim otmp, atmp, ptmp, qtmp
+
+For machine = 0 To 2
+	If $Hour2Clock($Time) Mod 5 = 0 And $MachStatus[machine].startUp<>0 Then
+		'Increament Overall OEE
+		$overalltmp[0] = $overalltmp[0] + $OEE[machine].Availability
+		$overalltmp[1] = $overalltmp[1] + $OEE[machine].Performance
+		$overalltmp[2] = $overalltmp[2] + $OEE[machine].Quality
+		utmp = utmp + $OEE[machine].Utilization
+		 
+		 				
+		'Get Total Machine ON
+		If $OEE[machine].Quality <> 0 Then
+			qtmp = qtmp +1
+		End If
+		
+		If $OEE[machine].Availability <> 0 Then
+			atmp = atmp +1
+		End If
+		
+		If $OEE[machine].Performance <> 0 Then
+			ptmp = ptmp +1
+		End If
+		
+		
+		'Send Overall Data into Tags
+			
+		'---------------------------------------------------------------------------------------------Availability---------------------------------------------------------------------------------------------------------------------------'
+		If atmp <> 0 Then
+			$Overall.Overal_Availability = $overalltmp[0]/atmp
+		End If
+		
+		'---------------------------------------------------------------------------------------------Performance---------------------------------------------------------------------------------------------------------------------------'
+		If ptmp <> 0 Then
+			$Overall.Overal_Performance = $overalltmp[1]/ptmp
+		End If
+		
+		'---------------------------------------------------------------------------------------------Quality---------------------------------------------------------------------------------------------------------------------------'
+		If qtmp <> 0 Then
+			$Overall.Overal_Quality = $overalltmp[2]/qtmp
+		End If
+		
+		'---------------------------------------------------------------------------------------------OEE---------------------------------------------------------------------------------------------------------------------------'
+		$Overall.Overal_OEE = ($Overall.Overal_Availability * $Overall.Overal_Performance * $Overall.Overal_Quality)/10000
+		$Overall.Overal_Utilization = utmp / 3		
+	End If
+	If  $MachStatus[0].startUp = 0  And $machStatus[1].startUp = 0  And $machStatus[2].startUp = 0  Then
+	$Overall.Overal_Utilization = 0
+	End If
+Next
+
+$overalltmp[0] = 0
+$overalltmp[1] = 0
+$overalltmp[2] = 0
+utmp = 0
+qtmp = 0
+ptmp = 0
+atmp = 0
+
+'----------------------------------------------------------------------------------------------------Top Slow Performance------------------------------------------------------------------------------------'
+
+For sp = 0 To 2
+
+	If sp <= 5 Then
+	slowp(sp) = "TA"& sp +1
+	End If
+
+If ($OEE[sp].Performance <>0 And $MachStatus[sp].startUp<>0) Then		
+				mchsperf(sp) = $OEE[sp].Performance
+		ElseIf ($machStatus[sp].startUp=0 Or $OEE[sp].Performance=0) Then
+				mchsperf(sp) = 0
+		End If	
+Next
+
+For s = 0 To 2
+	For t = 0 To 1
+	  If (mchsperf(t) > mchsperf(t+1)) Then
+	  	Dim tmpslowp1, tmpslowp2	  	
+	  	tmpslowp1 = slowp(t+1)
+	  	slowp(t+1) = slowp(t)
+	  	slowp(t) = tmpslowp1
+	  	
+	  	tmpslowp2 = mchsperf(t+1)
+	  	mchsperf(t+1) = mchsperf(t)
+	  	mchsperf(t) = tmpslowp2
+	  End If
+	Next
+Next
+
+$machChart[0].barTopSlowPerform = mchsperf(0)
+$machChart[1].barTopSlowPerform = mchsperf(1)
+$machChart[2].barTopSlowPerform = mchsperf(2)
+
+
+$machChart[0].mchTopSlowPerform = slowp(0)
+$machChart[1].mchTopSlowPerform = slowp(1)
+$machChart[2].mchTopSlowPerform = slowp(2)
+
+
+
+'----------------------------------------------------------------------------------------------------Top Fast Performance------------------------------------------------------------------------------------'
+
+For fp = 0 To 2
+	
+	If fp <= 5 Then
+	fastp(fp) = "TA"& fp +1
+	End If
+
+		
+		If ($OEE[fp].Performance<>0 And $MachStatus[fp].startUp<>0) Then		
+				mchfperf(fp) = $OEE[fp].Performance
+		End If	
+		
+'		If ($OEE[fp].Performance) = 0 Then
+'			$machChart[fp].barTopFastperform = 1000
+'		End If
+		
+Next
+
+For s = 0 To 2
+	For t = 0 To 1
+	  If (mchfperf(t) > mchfperf(t+1)) Then
+	  	Dim tmpfastp1, tmpfastp2	  	
+	  	tmpfastp1 = fastp(t+1)
+	  	fastp(t+1) = fastp(t)
+	  	fastp(t) = tmpfastp1
+	  	
+	  	tmpfastp2 = mchfperf(t+1)
+	  	mchfperf(t+1) = mchfperf(t)
+	  	mchfperf(t) = tmpfastp2
+	  End If
+	Next
+Next
+
+$machChart[0].barTopFastperform = mchfperf(2)
+$machChart[1].barTopFastperform = mchfperf(1)
+$machChart[2].barTopFastperform = mchfperf(0)
+
+
+$machChart[0].mchTopFastperform = fastp(2)
+$machChart[1].mchTopFastperform = fastp(1)
+$machChart[2].mchTopFastperform = fastp(0)
+
+
+'----------------------------------------------------------------------------------------------------Top Downtime Duration------------------------------------------------------------------------------------'
+
+For b = 0 To 2
+
+If b <= 3 Then
+	mm(b) = "TA "& b+1
+End If
+'dwnDur[b] = $TotDur[b].TotalDurTA1
+
+If ($availability[b].downtimeDuration <>0 And $MachStatus[b].startUp<>0) Then		
+				dwnDur(b) = $availability[b].downtimeDuration / (60)
+		ElseIf ($machStatus[b].startUp=0 Or $availability[b].downtimeDuration=0) Then
+				dwnDur(b) = 0
+		End If	
+Next
+
+For bb = 0 To 2
+For c = 0 To 1
+	If (dwnDur(c) > dwnDur(c+1)) Then
+	Dim tmpdd1, tmpdd2
+	tmpdd1 = dwnDur(c+1)
+	dwnDur(c+1) = dwnDur(c)
+	dwnDur(c) = tmpdd1
+	
+	tmpdd2 = mm(c+1)
+	mm(c+1) = mm(c)
+	mm(c) = tmpdd2
+	
+	End If
+	Next
+Next
+
+$machChart[0].barTopDownDuration = dwnDur(2)
+$machChart[1].barTopDownDuration = dwnDur(1)
+$machChart[2].barTopDownDuration = dwnDur(0)
+
+$machChart[0].resTopDownDuration = mm(2)
+$machChart[1].resTopDownDuration = mm(1)
+$machChart[2].resTopDownDuration = mm(0)
+
+
+'----------------------------------------------------------------------------------------------------Top Lowest Quality------------------------------------------------------------------------------------'
+
+For q= 0 To 2
+
+If q<=3 Then 
+lowmachine(q)= "TA"& q+1
+End If
+'lowquality(q) = $quality[q].qReject
+'Next 
+
+
+If ($quality[q].qGood <>0 And $MachStatus[b].startUp<>0) Then		
+				lowquality(q) = $quality[q].qReject
+		ElseIf ($machStatus[b].startUp=0 Or $quality[q].qGood=0) Then
+				lowquality(q) = 0
+		End If	
+Next
+
+For q = 0 To 2
+For qw = 0 To 1
+
+If (lowquality(qw) > lowquality(qw+1)) Then
+Dim lowq, lowqq
+	lowq = lowquality(qw+1) 
+	lowquality(qw+1) = lowquality(qw)
+	lowquality(qw) = lowq
+	
+	lowqq = lowmachine(qw+1)
+	lowmachine(qw+1) = lowmachine(qw)
+	lowmachine(qw) = lowqq
+End If	
+Next
+
+$machChart[0].barTopLowQuality = lowquality(2)
+$machChart[1].barTopLowQuality = lowquality(1)
+$machChart[2].barTopLowQuality = lowquality(0)
+
+$machChart[0].resTopLowQuality = lowmachine(2)
+$machChart[1].resTopLowQuality = lowmachine(1)
+$machChart[2].resTopLowQuality = lowmachine(0)
+
+
+Next
+
+'----------------------------------------------------------------------------------------------------Top Reject------------------------------------------------------------------------------------'
+For z= 0 To 2
+
+Reject(0) = Reject(0) + $RJ[z].OR_BlackSpot
+Reject(1) = Reject(1) + $RJ[z].OR_BrokenHipBall
+Reject(2) = Reject(2) + $RJ[z].OR_BrokenPart
+Reject(3) = Reject(3) + $RJ[z].OR_Bubble
+Reject(4) = Reject(4) + $RJ[z].OR_ColourMismatch
+Reject(5) = Reject(5) + $RJ[z].OR_GapTorso
+Reject(6) = Reject(6) + $RJ[z].OR_ImprorerFunction
+Reject(7) = Reject(7) + $RJ[z].OR_LoosePart
+Reject(8) = Reject(8) + $RJ[z].OR_MissingArm
+Reject(9) = Reject(9) + $RJ[z].OR_MissingAssy
+Reject(10) = Reject(10) + $RJ[z].OR_MissingHipBall
+Reject(11) = Reject(11) + $RJ[z].OR_MissingLeg
+Reject(12) = Reject(12) + $RJ[z].OR_BrokenLower
+Reject(13) = Reject(13) + $RJ[z].OR_MissingNeck
+Reject(14) = Reject(14) + $RJ[z].OR_MissingRearTorso
+Reject(15) = Reject(15) + $RJ[z].OR_Scratch
+Reject(16) = Reject(16) + $RJ[z].OR_Shortshot
+Reject(17) = Reject(17) + $RJ[z].OR_SolventSmear
+
+Next
+
+TypeReject(0) = " Black Spot "
+TypeReject(1) = " Broken Hip Ball "
+TypeReject(2) = " Broken Part "
+TypeReject(3) = " Bubble "
+TypeReject(4) = " Colour Mismatch "
+TypeReject(5) = " Gap Torso "
+TypeReject(6) = " Improrer Function "
+TypeReject(7) = " Loose Part "
+TypeReject(8) = " Missing Arm "
+TypeReject(9) = " Missing Assy "
+TypeReject(10) = " Missing Hip Ball "
+TypeReject(11) = " Missing Leg "
+TypeReject(12) = " Broken Lower "
+TypeReject(13) = " Missing Neck "
+TypeReject(14) = " Missing Rear Torso "
+TypeReject(15) = " Scratch "
+TypeReject(16) = " Shortshot "
+TypeReject(17) = " Solvent Smear "
+
+For v = 0 To 17
+For o = 0 To 16
+	If (Reject(o) > Reject(o+1)) Then
+	Dim tmpr1, tmprr2
+	tmpr1 = Reject(o+1)
+	Reject(o+1) = Reject(o)
+	Reject(o) = tmpr1
+	
+	tmprr2 = TypeReject(o+1)
+	TypeReject(o+1) = TypeReject(o)
+	TypeReject(o) = tmprr2
+	
+		End If
+		Next	
+	Next
+	
+	$machChart[0].barChartReject = Reject(17)
+	$machChart[1].barChartReject = Reject(16)
+	$machChart[2].barChartReject = Reject(15)
+	$machChart[3].barChartReject = Reject(14)
+	$machChart[4].barChartReject = Reject(13)
+	
+	$machChart[0].resTopReject = TypeReject(17)
+	$machChart[1].resTopReject = TypeReject(16)
+	$machChart[2].resTopReject = TypeReject(15)
+	$machChart[3].resTopReject = TypeReject(14)
+	$machChart[4].resTopReject = TypeReject(13)
+	
+	
+	

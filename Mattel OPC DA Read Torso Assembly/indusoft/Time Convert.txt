@@ -1,0 +1,13 @@
+'Variables available only for this group can be declared here.
+Dim machno
+
+'The code configured here is executed while the condition configured in the Execution field is TRUE.
+ For machno = 0 To 2
+ 
+$availability[machno].strRuntimeDuration = $Format("%h", $availability[machno].runtimeDuration)
+$availability[machno].strUptimeDuration = $Format("%h", $availability[machno].uptimeDuration)
+$availability[machno].strDowntimeDuration = $Format("%h", $availability[machno].downtimeDuration)
+
+Next
+
+

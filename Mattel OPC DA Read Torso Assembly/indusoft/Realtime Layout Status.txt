@@ -1,0 +1,235 @@
+'Variables available only for this group can be declared here.
+
+
+'The code configured here is executed while the condition configured in the Execution field is TRUE.
+Dim MachineLY	
+For MachineLY = 0 To 2
+
+		'Downtime Front Torso
+		If ($DownReasonMsg[MachineLY]=0) Then
+				$LayoutStat.TempfrontTorso = $LayoutStat.TempfrontTorso +1
+				$LayoutStat.FrontTorso = $LayoutStat.TempfrontTorso
+											
+				$LayoutStat.Arm = $LayoutStat.TempArm			
+				$LayoutStat.HipConnector = $LayoutStat.TempHipConnector
+				$LayoutStat.NeckConnector = $LayoutStat.TempNeckConnector
+				$LayoutStat.RearDipping = $LayoutStat.TempRearDipping
+				$LayoutStat.Leg = $LayoutStat.TempLeg
+				$LayoutStat.Unloading = $LayoutStat.TempUnloading
+				$LayoutStat.Running = $LayoutStat.TempRunning
+				$LayoutStat.Idle = $LayoutStat.TempIdle
+				$LayoutStat.MachineOFF = $LayoutStat.MachineOFF
+				$LayoutStat.Emergency = $LayoutStat.TempEmergency
+					
+			End If
+		
+		'Downtime Hip Connector
+		If ($DownReasonMsg[MachineLY]=1) Then
+			$LayoutStat.TempHipConnector = $LayoutStat.TempHipConnector +1
+			$LayoutStat.HipConnector = $LayoutStat.TempHipConnector
+			
+			$LayoutStat.Arm = $LayoutStat.TempArm
+			$LayoutStat.FrontTorso = $LayoutStat.TempfrontTorso
+			$LayoutStat.NeckConnector = $LayoutStat.TempNeckConnector
+			$LayoutStat.RearDipping = $LayoutStat.TempRearDipping
+			$LayoutStat.Leg = $LayoutStat.TempLeg
+			$LayoutStat.Unloading = $LayoutStat.TempUnloading
+			$LayoutStat.Running = $LayoutStat.TempRunning
+			$LayoutStat.Idle = $LayoutStat.TempIdle
+			$LayoutStat.MachineOFF = $LayoutStat.MachineOFF
+			$LayoutStat.Emergency = $LayoutStat.TempEmergency
+		
+		End If
+		
+		'Downtime Arm
+		If ($DownReasonMsg[MachineLY]=2) Then
+			$LayoutStat.TempArm = $LayoutStat.TempArm +1
+			$LayoutStat.Arm = $LayoutStat.TempArm
+
+			$LayoutStat.HipConnector = $LayoutStat.TempHipConnector
+			$LayoutStat.FrontTorso = $LayoutStat.TempfrontTorso
+			$LayoutStat.NeckConnector = $LayoutStat.TempNeckConnector
+			$LayoutStat.RearDipping = $LayoutStat.TempRearDipping
+			$LayoutStat.Leg = $LayoutStat.TempLeg
+			$LayoutStat.Unloading = $LayoutStat.TempUnloading
+			$LayoutStat.Running = $LayoutStat.TempRunning
+			$LayoutStat.Idle = $LayoutStat.TempIdle
+			$LayoutStat.MachineOFF = $LayoutStat.MachineOFF
+			$LayoutStat.Emergency = $LayoutStat.TempEmergency
+	
+			
+			End If
+		
+		'Downtime Neck Connector
+		If ($DownReasonMsg[MachineLY]=3) Then
+			$LayoutStat.TempNeckConnector = $LayoutStat.TempNeckConnector  +1
+			$LayoutStat.NeckConnector = $LayoutStat.TempNeckConnector
+			
+			$LayoutStat.Arm = $LayoutStat.TempArm
+			$LayoutStat.HipConnector = $LayoutStat.TempHipConnector
+			$LayoutStat.FrontTorso = $LayoutStat.TempfrontTorso
+			$LayoutStat.RearDipping = $LayoutStat.TempRearDipping
+			$LayoutStat.Leg = $LayoutStat.TempLeg
+			$LayoutStat.Unloading = $LayoutStat.TempUnloading
+			$LayoutStat.Running = $LayoutStat.TempRunning
+			$LayoutStat.Idle = $LayoutStat.TempIdle
+			$LayoutStat.MachineOFF = $LayoutStat.MachineOFF
+			$LayoutStat.Emergency = $LayoutStat.TempEmergency
+
+		End If
+		
+		'Downtime Rear + Dipping
+		If ($DownReasonMsg[MachineLY]=4) Then
+			$LayoutStat.TempRearDipping = $LayoutStat.TempRearDipping +1
+			$LayoutStat.RearDipping = $LayoutStat.TempRearDipping
+			
+			$LayoutStat.NeckConnector = $LayoutStat.TempNeckConnector
+			$LayoutStat.Arm = $LayoutStat.TempArm
+			$LayoutStat.HipConnector = $LayoutStat.TempHipConnector
+			$LayoutStat.FrontTorso = $LayoutStat.TempfrontTorso
+			$LayoutStat.Leg = $LayoutStat.TempLeg
+			$LayoutStat.Unloading = $LayoutStat.TempUnloading
+			$LayoutStat.Running = $LayoutStat.TempRunning
+			$LayoutStat.Idle = $LayoutStat.TempIdle
+			$LayoutStat.MachineOFF = $LayoutStat.MachineOFF
+			$LayoutStat.Emergency = $LayoutStat.TempEmergency
+
+		End If
+		
+		'Downtime Leg
+		If ($DownReasonMsg[MachineLY]=5) Then
+			$LayoutStat.TempLeg = $LayoutStat.TempLeg+1
+			$LayoutStat.Leg = $LayoutStat.TempLeg
+			
+			$LayoutStat.RearDipping = $LayoutStat.TempRearDipping
+			$LayoutStat.NeckConnector = $LayoutStat.TempNeckConnector
+			$LayoutStat.Arm = $LayoutStat.TempArm
+			$LayoutStat.HipConnector = $LayoutStat.TempHipConnector
+			$LayoutStat.FrontTorso = $LayoutStat.TempfrontTorso
+			$LayoutStat.Unloading = $LayoutStat.TempUnloading
+			$LayoutStat.Running = $LayoutStat.TempRunning
+			$LayoutStat.Idle = $LayoutStat.TempIdle
+			$LayoutStat.MachineOFF = $LayoutStat.MachineOFF
+			$LayoutStat.Emergency = $LayoutStat.TempEmergency
+		End If
+		
+		'Downtime Unloading
+		If ($DownReasonMsg[MachineLY]=6) Then
+			$LayoutStat.TempUnloading = $LayoutStat.TempUnloading +1
+			$LayoutStat.Unloading = $LayoutStat.TempUnloading
+			
+			$LayoutStat.Leg = $LayoutStat.TempLeg
+			$LayoutStat.RearDipping = $LayoutStat.TempRearDipping
+			$LayoutStat.NeckConnector = $LayoutStat.TempNeckConnector
+			$LayoutStat.Arm = $LayoutStat.TempArm
+			$LayoutStat.HipConnector = $LayoutStat.TempHipConnector
+			$LayoutStat.FrontTorso = $LayoutStat.TempfrontTorso
+			$LayoutStat.Running = $LayoutStat.TempRunning
+			$LayoutStat.Idle = $LayoutStat.TempIdle
+			$LayoutStat.MachineOFF = $LayoutStat.MachineOFF
+			$LayoutStat.Emergency = $LayoutStat.TempEmergency
+		End If
+		
+		'Downtime Running
+		If ($DownReasonMsg[MachineLY]=7) Then
+			$LayoutStat.TempRunning = $LayoutStat.TempRunning +1
+			$LayoutStat.Running = $LayoutStat.TempRunning
+			
+			$LayoutStat.Unloading = $LayoutStat.TempUnloading
+			$LayoutStat.Leg = $LayoutStat.TempLeg
+			$LayoutStat.RearDipping = $LayoutStat.TempRearDipping
+			$LayoutStat.NeckConnector = $LayoutStat.TempNeckConnector
+			$LayoutStat.Arm = $LayoutStat.TempArm
+			$LayoutStat.HipConnector = $LayoutStat.TempHipConnector
+			$LayoutStat.FrontTorso = $LayoutStat.TempfrontTorso
+			$LayoutStat.Idle = $LayoutStat.TempIdle
+			$LayoutStat.MachineOFF = $LayoutStat.MachineOFF
+			$LayoutStat.Emergency = $LayoutStat.TempEmergency	
+		End If
+		
+		'Downtime Emergency
+		If ($DownReasonMsg[MachineLY]=8) Then
+			$LayoutStat.TempEmergency = $LayoutStat.TempEmergency +1
+			$LayoutStat.Emergency = $LayoutStat.TempEmergency
+			
+			$LayoutStat.Running = $LayoutStat.TempRunning
+			$LayoutStat.Unloading = $LayoutStat.TempUnloading
+			$LayoutStat.Leg = $LayoutStat.TempLeg
+			$LayoutStat.RearDipping = $LayoutStat.TempRearDipping
+			$LayoutStat.NeckConnector = $LayoutStat.TempNeckConnector
+			$LayoutStat.Arm = $LayoutStat.TempArm
+			$LayoutStat.HipConnector = $LayoutStat.TempHipConnector
+			$LayoutStat.FrontTorso = $LayoutStat.TempfrontTorso
+			$LayoutStat.Idle = $LayoutStat.TempIdle
+			$LayoutStat.MachineOFF = $LayoutStat.MachineOFF
+		End If
+		
+		
+			'Downtime Idle
+		If ($DownReasonMsg[MachineLY]=8) Then
+			$LayoutStat.TempIdle = $LayoutStat.TempIdle +1
+			$LayoutStat.Idle = $LayoutStat.TempIdle
+			
+			$LayoutStat.Running = $LayoutStat.TempRunning
+			$LayoutStat.Unloading = $LayoutStat.TempUnloading
+			$LayoutStat.Leg = $LayoutStat.TempLeg
+			$LayoutStat.RearDipping = $LayoutStat.TempRearDipping
+			$LayoutStat.NeckConnector = $LayoutStat.TempNeckConnector
+			$LayoutStat.Arm = $LayoutStat.TempArm
+			$LayoutStat.HipConnector = $LayoutStat.TempHipConnector
+			$LayoutStat.FrontTorso = $LayoutStat.TempfrontTorso
+			$LayoutStat.MachineOFF = $LayoutStat.MachineOFF
+			$LayoutStat.Emergency = $LayoutStat.TempEmergency
+		End If
+
+			
+			'Downtime Machine OFF
+		If ($DownReasonMsg[MachineLY]=8) Then
+			$LayoutStat.TempMachineOFF = $LayoutStat.TempMachineOFF 
+			$LayoutStat.MachineOFF = $LayoutStat.TempMachineOFF
+			
+			$LayoutStat.Idle = $LayoutStat.TempIdle
+			$LayoutStat.Running = $LayoutStat.TempRunning
+			$LayoutStat.Unloading = $LayoutStat.TempUnloading
+			$LayoutStat.Leg = $LayoutStat.TempLeg
+			$LayoutStat.RearDipping = $LayoutStat.TempRearDipping
+			$LayoutStat.NeckConnector = $LayoutStat.TempNeckConnector
+			$LayoutStat.Arm = $LayoutStat.TempArm
+			$LayoutStat.HipConnector = $LayoutStat.TempHipConnector
+			$LayoutStat.FrontTorso = $LayoutStat.TempfrontTorso
+			$LayoutStat.Emergency = $LayoutStat.TempEmergency
+		End If
+	
+'--------------------------------------------------------------------------------------------------------DSA------------------------------------------------------------------------------------------------------------------------
+			
+'		'DSA 
+'		If $Quality[MachineLY].qTarget <> 0 Then
+'				If $Quality[MachineLY].qGood >= $Quality[MachineLY].qTarget Then
+'						$tmp_rchd = $tmp_rchd +1
+'						$Rchd_target = $tmp_rchd
+'						
+'						$Lsthn_target = $tmp_lsthn		
+'				End If
+'				
+'				If $Quality[MachineLY].qGood <  $Quality[MachineLY].qTarget Then
+'						$tmp_lsthn = $tmp_lsthn +1
+'						$Lsthn_target = $tmp_lsthn
+'						
+'						$Rchd_target = $tmp_rchd
+'				End If
+'		End If
+		
+Next		
+$LayoutStat.TempArm =0
+$LayoutStat.TempEmergency = 0
+$LayoutStat.TempfrontTorso =0
+$LayoutStat.TempHipConnector =0
+$LayoutStat.TempIdle =0
+$LayoutStat.TempLeg =0
+$LayoutStat.TempMachineOFF =0
+$LayoutStat.TempNeckConnector =0
+$LayoutStat.TempRearDipping =0
+$LayoutStat.TempRunning =0
+$LayoutStat.TempUnloading =0
+'$tmp_rchd = 0
+'$tmp_lsthn = 0

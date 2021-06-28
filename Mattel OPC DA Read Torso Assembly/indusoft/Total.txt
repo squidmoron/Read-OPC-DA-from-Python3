@@ -1,0 +1,22 @@
+'Variables available only for this group can be declared here.
+Dim machno
+Dim mn
+
+'The code configured here is executed while the condition configured in the Execution field is TRUE.
+'---------------------------------------------------------------------------------------------------------Total Output--------------------------------------------------------------------------------------------------------------------
+		For machno = 0 To 2
+		
+		If ($quality[machno].qGood <> 0) Then
+		$quality[machno].qTotal = ($quality[machno].qGood + $quality[machno].qReject)			
+		End If
+					
+Next
+
+'---------------------------------------------------------------------------------------------------------Total Idle Dur--------------------------------------------------------------------------------------------------------------------
+For mn  = 0 To 2
+
+If ($machStatus[mn].startUp <> 0) Then	
+	$machStatus[mn].idle = ( $TimeProb[mn].Arm + $TimeProb[mn].FrontTorso + $TimeProb[mn].HipConnector + $TimeProb[mn].Leag + $TimeProb[mn].NeckConnector + $TimeProb[mn].RearTorsoDipping + $TimeProb[mn].Unloading )
+End If
+
+Next

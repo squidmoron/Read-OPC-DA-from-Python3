@@ -1,0 +1,280 @@
+'Variables available only for this group can be declared here.
+Dim machno, query2, tag2, kpk
+
+'The code configured here is executed while the condition configured in the Execution field is TRUE.
+$DateTime = $Date & " " & $Time
+$dateToday=$ClockGetDate($GetClock(),$GetTimeZone())
+$timeToday=$ClockGetTime($GetClock(),$GetTimeZone())
+
+If ( $Hour2Clock($Time)>$Hour2Clock("07:10:00") And $Hour2Clock($Time)<$Hour2Clock("15:40:00") ) Then
+	$shift[0]="S2"
+	$shift[1]="Shift 2"
+ElseIf ( $Hour2Clock($Time)>$Hour2Clock("15:40:00") And $Hour2Clock($Time)<$Hour2Clock("22:30:00") ) Then
+	$shift[0]="S3"
+	$shift[1]="Shift 3"
+Else 
+	$shift[0]="S1"
+	$shift[1]="Shift 1"
+End If
+
+'---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+For machno = 0 To 2
+
+'---------------------------------------------------------------------------------------------------------------Machine Status--------------------------------------------------------------------------------------------------------------------
+		
+	   	'Machine Off
+		If ($machStatus[machno].startUp= 0) Then
+				$downReasonMsg[machno] = 10
+				
+			'Running
+		ElseIf ($machStatus[machno].Running = 1 ) Then
+					$downReasonMsg[machno] = 7
+
+		'Front Torso
+		ElseIf ($machStatus[machno].frontTorso = 1) Then
+				$downReasonMsg[machno] = 0
+				
+		'Hip Connector
+		ElseIf ($machStatus[machno].hipConnector = 1) Then
+					$downReasonMsg[machno] = 1
+		
+		'Arm
+		ElseIf ($machStatus[machno].Armm = 1) Then
+				$downReasonMsg[machno] = 2
+				
+		'Neck Connector
+		ElseIf ($machStatus[machno].neckConnector = 1) Then
+				$downReasonMsg[machno] = 3
+				
+		'Rear + Dipping
+		ElseIf ($machStatus[machno].rearDipping = 1) Then
+				$downReasonMsg[machno] = 4
+				
+		'Leg
+		ElseIf ($machStatus[machno].leg = 1) Then
+				$downReasonMsg[machno] = 5
+								
+		'Unloading
+		ElseIf ($machStatus[machno].unloading = 1) Then
+				$downReasonMsg[machno] = 6
+								
+		'Emergency
+		ElseIf ($machStatus[machno].emergency = 1) Then
+				$downReasonMsg[machno] = 8							
+								
+		'ChangeOver
+		ElseIf ($machStatus[machno].changeover = 1) Then
+			$downReasonMsg[machno] = 11
+			
+		'PM
+		ElseIf ($machStatus[machno].PM = 1 ) Then
+			$downReasonMsg[machno] = 12
+									
+		'No Material
+		
+			'Idle
+		Else	$downReasonMsg[machno] = 9
+
+			
+	'	ElseIf  ($machStatus[machno].idle_Arm = 1  Or $machStatus[machno].Idle_Dipping = 1  Or $machStatus[machno].idle_FrontT = 1  Or $machStatus[machno].Idle_Hip = 1 Or $machStatus[machno].Idle_Leg = 1  Or $machStatus[machno].Idle_Neck = 1  Or  $machStatus[machno].Idle_Unloading = 1 )  Then
+	'			$downReasonMsg[machno] = 9
+				
+				'Running
+'		If ($machStatus[machno].Running = 1 ) Then
+'			Else	$downReasonMsg[machno] = 7
+		
+		End If
+		
+'---------------------------------------------------------------------------------------------------------------Issue Category--------------------------------------------------------------------------------------------------------------------
+		
+			'Robot Issue
+		If ($machStautsIC[machno].robotIssue = 1 ) Then
+				$issueCategoryMsg[machno] = 0
+				
+			'Cammera Issue
+		ElseIf ($machStautsIC[machno].cameraIssue = 1 ) Then
+			$issueCategoryMsg[machno] = 1
+			
+			'Mechanical Issue
+		ElseIf ($machStautsIC[machno].mechanicalIssue = 1 ) Then
+			$issueCategoryMsg[machno] = 2
+			
+			'Electrical Issue
+		ElseIf ($machStautsIC[machno].electricalIssue= 1 ) Then
+			$issueCategoryMsg[machno] = 3
+			
+			'Pneumatic Issue
+		ElseIf ($machStautsIC[machno].pneumaticIssue = 1 ) Then
+			$issueCategoryMsg[machno] = 4
+			
+			'Bowl Feeder Issue
+		ElseIf ($machStautsIC[machno].bowlfeederIssue = 1 ) Then
+			$issueCategoryMsg[machno] = 4
+			
+			'Material Issue
+		ElseIf ($machStautsIC[machno].materialIssue = 1 ) Then
+			$issueCategoryMsg[machno] = 5
+			
+			'Program Issue
+		ElseIf ($machStautsIC[machno].programIssue = 1 ) Then
+			$issueCategoryMsg[machno] = 6
+			
+			'no issue
+	Else
+		$issueCategoryMsg[machno] = 8			
+		End If
+		
+'---------------------------------------------------------------------------------------------------------Average Cycle Time--------------------------------------------------------------------------------------------------------------------
+		If ($performance[machno].avgCT <> 0 ) Then
+			$performance[machno].avgCTTot = ( $performance[machno].avgCT /  $quality[machno].qTotal )
+		ElseIf ($performance[machno].avgCT = 0) Then
+			$performance[machno].avgCTTot = 0
+		End If
+
+'---------------------------------------------------------------------------------------------------------Idle Dur--------------------------------------------------------------------------------------------------------------------
+'	If ($downReasonMsg[machno] = 9) Then
+'		$tempIdle[machno] = $tempIdle[machno] + 0.13
+'	End If
+	
+'	If ($tempIdle[machno] ) > ($performance[machno].StdCycle*2) Then
+'		$idleflag[machno] = 1
+'	ElseIf $downReasonMsg[machno] = 7 Then
+'		$idleflag[machno] = 0
+'	End If
+	
+	
+'	If $idleflag[machno] And Not ($downReasonMsg[machno] = 1) And Not ($downReasonMsg[machno] = 2) And Not ($downReasonMsg[machno] = 3) And Not ($downReasonMsg[machno] = 4) And Not ($downReasonMsg[machno] = 5) And Not ($downReasonMsg[machno] = 6) And Not  ($downReasonMsg[machno] = 7) And Not ($downReasonMsg[machno] = 8) And Not ($downReasonMsg[machno] = 10) And Not ($downReasonMsg[machno] = 11) And Not  ($downReasonMsg[machno] = 12) Then 
+'			$TimeProb[machno].Idle = $TimeProb[machno].Idle + 0.13
+'	End If
+'---------------------------------------------------------------------------------------------------------Filter Good or Not Good--------------------------------------------------------------------------------------------------------------------
+
+	If ($quality[machno].qGood - $quality[machno].qReject <1) Then
+		$OEE[machno].Quality = 0
+	End If
+
+'---------------------------------------------------------------------------------------------------------Get Output--------------------------------------------------------------------------------------------------------------------
+	$quality[machno].qTotal = $quality[machno].qGood
+	
+	If ($quality[machno].qGood <> 0) Then
+		$quality[machno].qGood =  $quality[machno].qGood - $quality[machno].qReject
+	End If
+'---------------------------------------------------------------------------------------------------------Availability Calculation--------------------------------------------------------------------------------------------------------------------
+	
+	If ($availability[machno].downtimeDuration < $availability[machno].runtimeDuration) Then
+		$OEE[machno].Availability = (($availability[machno].runtimeDuration - $availability[machno].downtimeDuration) / $availability[machno].runtimeDuration)*100
+	ElseIf ($OEE[machno].Availability < 0 Or $OEE[machno].Availability = 0) Then
+		$OEE[machno].Availability = 0
+	End If
+
+'---------------------------------------------------------------------------------------------------------Utilization Calculation-------------------------------------------------------------------------------------------------------------------------	
+	
+	If	($machStatus[machno].startUp = 1 ) Then
+			$OEE[machno].Utilization = 100
+	ElseIf ($machStatus[machno].startUp = 0) Then
+			$OEE[machno].Utilization = 0
+	End If
+	
+	
+	If ($machStatus[machno].startUp <> 0) Then
+'---------------------------------------------------------------------------------------------------------Performance Calculation--------------------------------------------------------------------------------------------------------------------
+		
+	If ($quality[machno].qTotal > 0  )  Then 
+			$OEE[machno].Performance = (  $performance[machno].StdCycle / ( $performance[machno].avgCT / $quality[machno].qTotal ) )*100
+	Else
+			$OEE[machno].Performance = 0 	
+		
+	End If 
+		End If	
+'---------------------------------------------------------------------------------------------------------Quality Calculation--------------------------------------------------------------------------------------------------------------------
+
+If ($quality[machno].qGood = 0 And $quality[machno].qReject = 0 ) Then
+	$OEE[machno].Quality = 0
+Else
+	$OEE[machno].Quality = ($quality[machno].qGood / ($quality[machno].qGood + $quality[machno].qReject))*100
+End If
+
+'--------------------------------------------------------------------------------------------------------OEE Calculation------------------------------------------------------------------------------------------------------------------------
+
+		If ($OEE[machno].Quality <> 0 And $OEE[machno].Availability <> 0 ) Then
+ 				$OEE[machno].OEE = ( $OEE[machno].Availability * $OEE[machno].Performance * $OEE[machno].Quality ) /1000						
+ 		End If						
+
+
+'------------------------------------------------------------------------------------------------------------Timeline-------------------------------------------------------------------------------------------------------- 
+		If $DownReasonMsg[machno]<>$DownTimelineMch[machno] Then
+			Call SendTimeline(machno)
+			$DownTimelineMch[machno] = $DownReasonMsg[machno]
+		End If
+
+'--------------------------------------------------------------------------------------------------------Daily Schedule------------------------------------------------------------------------------------------------------------------------
+
+	'	If ($Quality[machno].qTarget <> 0) Then 
+	'	$bar_dsa[machno] = ($Quality[machno].qGood / $Quality[machno].qTarget)*100
+	'	$variance[machno] = $Quality[machno].qGood -  $Quality[machno].qTarget
+	'End If			
+																																																																																																																																																																																																																																																																																																	
+Next
+'--------------------------------------------------------------------------------------------------------Send OEE To Database Every Shift Changes------------------------------------------------------------------------------------------------------------------------
+	
+If ($Hour2Clock($Time)=$Hour2Clock("15:39:46") And $tempSendProsedure <> 1) Then
+	Call SendOEE()
+	Call SendDT()
+	Call sendQC()
+	Call StationDetiles()
+	Call SendIssue()	
+	$tempSendProsedure = 1
+End If	
+	
+If ($Hour2Clock($Time)=$Hour2Clock("07:06:46") And $tempSendProsedure <> 1) Then
+	Call SendOEE()
+	Call SendDT()	
+	Call sendQC()
+	Call StationDetiles()
+	Call SendIssue()	
+	$tempSendProsedure = 1
+End If
+
+If ($Hour2Clock($Time)=$Hour2Clock("22:29:46") And $tempSendProsedure <> 1) Then
+	Call SendOEE()
+	Call SendDT()
+	Call sendQC()
+	Call StationDetiles()
+	Call SendIssue()	
+	$tempSendProsedure = 1
+End If
+
+'------------------------------------------------------------------------------------------Reset Value Every New Shift Start---------------------------------------------------------------------------------
+If ($Hour2Clock($Time)>$Hour2Clock("15:39:46")) And ($Hour2Clock($Time)<$Hour2Clock("15:39:49"))  Then
+	Call ResetAllValues()
+End If
+
+If ($Hour2Clock($Time)>$Hour2Clock("07:10:46")) And ($Hour2Clock($Time)<$Hour2Clock("07:10:49"))Then
+	Call ResetAllValues()
+End If
+
+If ($Hour2Clock($Time)>$Hour2Clock("22:29:46")) And ($Hour2Clock($Time)<$Hour2Clock("22:29:49"))Then
+	Call ResetAllValues()
+End If
+
+'---------------------------------------------------------------------------------Send Data to The Database Every 1 Minute------------------------------------------------------------------------------
+If($Second Mod 30 = 0) Then
+	Call SendRealtime() 
+	Call SendOverallRealtime()
+	Call SendTopDownReason()
+	Call SendMachineChart()
+End If
+
+'--------------------------------------------------------------------------------------------------------Send OEE Trend------------------------------------------------------------------------------------------------------------------------
+
+If($Minute Mod 60 = 0 And $Second Mod 60 = 16 And $delaySecond[1] = 0)  Then
+	Dim val, q
+	val = $Overall_OEE
+	q = "INSERT INTO TA.dbo.oee_trend_ta VALUES ("&val&",'"&$DateTime&"')"
+	$DBExecute("TA",q)	
+	$delaySecond[1] = 1
+End If
+
+If($Second Mod 60 = 15) Then
+	$delaySecond[1] = 0
+	$tempSendProsedure = 0
+End If

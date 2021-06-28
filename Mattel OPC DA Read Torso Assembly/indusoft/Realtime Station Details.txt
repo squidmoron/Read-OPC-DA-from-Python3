@@ -1,0 +1,559 @@
+'Variables available only for this group can be declared here.
+Dim mech,DowntimeStation(7),TypeDowntimeCS(7) , j , v
+Dim FrontTorso(15),TypeFront(15),n,o
+Dim HipConnector(15),TypeHip(15),a,b
+Dim Armm(26),TypeArm(26),c,d
+Dim Rear(24),TypeRear(24),e,f
+Dim NeckConnector(15),TypeNeck(15),g,h
+Dim Legg(17),TypeLeg(17),k,l
+Dim Unloading(9),TypeUnload(9),x,y
+
+
+'The code configured here is executed while the condition configured in the Execution field is TRUE.
+'-----------------------------------------------------------------------------------Average Cycle Time Station--------------------------------------------------------------------------------------------------'
+
+ 	 $avgCycleChart[$machinePos].resTopCycleChart1 = " Front Torso "
+ 	 $avgCycleChart[$machinePos].resTopCycleChart2 = "Hip Connector  "
+	 $avgCycleChart[$machinePos].resTopCycleChart3 = " Arm "
+	 $avgCycleChart[$machinePos].resTopCycleChart4 = " Neck Connector "
+ 	 $avgCycleChart[$machinePos].resTopCycleChart5 = " Rear Torso Dipping "
+ 	 $avgCycleChart[$machinePos].resTopCycleChart6 = " Leag "
+ 	 $avgCycleChart[$machinePos].resTopCycleChart7 = " Unloading "
+ 	 
+ 	 $avgCycleChart[$machinePos].totBarTopoCycleChart1 = $avgTrend[$machinePos].bar_FrontTorso
+ 	 $avgCycleChart[$machinePos].totBarTopoCycleChart2 = $avgTrend[$machinePos].bar_HipConnector
+ 	 $avgCycleChart[$machinePos].totBarTopoCycleChart3 = $avgTrend[$machinePos].bar_arm
+ 	 $avgCycleChart[$machinePos].totBarTopoCycleChart4 = $avgTrend[$machinePos].bar_NeckConnector
+ 	 $avgCycleChart[$machinePos].totBarTopoCycleChart5 = $avgTrend[$machinePos].bar_RearDipping
+ 	 $avgCycleChart[$machinePos].totBarTopoCycleChart6 = $avgTrend[$machinePos].bar_Leg
+ 	 $avgCycleChart[$machinePos].totBarTopoCycleChart7 = $avgTrend[$machinePos].bar_Unloading
+ 
+ '-----------------------------------------------------------------------------------Downtime Counting Station--------------------------------------------------------------------------------------------------'
+
+ DowntimeStation(0) = $Temp[$machinePos].FrontTorso_Station
+ DowntimeStation(1) = $Temp[$machinePos].HipConnector_Station
+ DowntimeStation(2) = $Temp[$machinePos].Arm_Station
+ DowntimeStation(3) = $Temp[$machinePos].NeckConnector_Station
+ DowntimeStation(4) = $Temp[$machinePos].RearTorsoDipping_Station
+ DowntimeStation(5) = $Temp[$machinePos].Leag_Station
+ DowntimeStation(6) = $Temp[$machinePos].Unloading_Station
+
+ 
+  TypeDowntimeCS(0) = " Front Station "
+  TypeDowntimeCS(1) = " Hip Connector "
+  TypeDowntimeCS(2) = " Arm "
+  TypeDowntimeCS(3) = " Neck Connector "
+  TypeDowntimeCS(4) = " Rear Torso Dipping "
+  TypeDowntimeCS(5) = " Leag "
+  TypeDowntimeCS(6) = " Unloading "
+ 
+
+ 
+ For v = 0 To 6
+ For j = 0 To 5
+ 	If (DowntimeStation(j) > DowntimeStation(j+1)) Then
+ 	Dim tmpDCS1, tmpDCS2
+ 	tmpDCS1 = DowntimeStation(j+1)
+	DowntimeStation(j+1) = DowntimeStation(j)
+	DowntimeStation(j) = tmpDCS1
+	
+	 tmpDCS2 = TypeDowntimeCS(j+1)
+	 TypeDowntimeCS(j+1) = TypeDowntimeCS(j)
+	 TypeDowntimeCS(j) = tmpDCS2
+	 
+	  	End If
+	  	Next
+	Next	   
+	   $avgCycleChart[0].barTopCountDT = DowntimeStation(6)
+	   $avgCycleChart[1].barTopCountDT = DowntimeStation(5)
+	   $avgCycleChart[2].barTopCountDT = DowntimeStation(4)
+	   $avgCycleChart[3].barTopCountDT = DowntimeStation(3)
+	   $avgCycleChart[4].barTopCountDT = DowntimeStation(2)
+	   $avgCycleChart[5].barTopCountDT = DowntimeStation(1)
+	   $avgCycleChart[6].barTopCountDT = DowntimeStation(0)
+
+	   
+	  $avgCycleChart[0].resTopCountDT = TypeDowntimeCS(6)
+	  $avgCycleChart[1].resTopCountDT = TypeDowntimeCS(5)
+	  $avgCycleChart[2].resTopCountDT = TypeDowntimeCS(4)
+	  $avgCycleChart[3].resTopCountDT = TypeDowntimeCS(3)
+	  $avgCycleChart[4].resTopCountDT = TypeDowntimeCS(2)
+	  $avgCycleChart[5].resTopCountDT = TypeDowntimeCS(1)
+	  $avgCycleChart[6].resTopCountDT = TypeDowntimeCS(0)
+	  
+ '---------------------------------------------------------------------------------------------------Front Torso----------------------------------------------------------------------------------------------------------------------------'
+
+		FrontTorso(0) 		= $Front[$machinePos].Cameraerr
+		FrontTorso(1) 		= $Front[$machinePos].Materialchangedash
+		FrontTorso(2) 		= $Front[$machinePos].Materialempty
+		FrontTorso(3) 		= $Front[$machinePos].Materialquality
+		FrontTorso(4) 		= $Front[$machinePos].Materialwrong
+		FrontTorso(5) 		= $Front[$machinePos].Mechanicfeeder
+		FrontTorso(6) 		= $Front[$machinePos].Mechanicpartnest
+		FrontTorso(7) 		= $Front[$machinePos].Mechanicspring
+		FrontTorso(8) 		= $Front[$machinePos].Pneumaticcvacum
+		FrontTorso(9) 		= $Front[$machinePos].Pneumaticfitting
+		FrontTorso(10) 	= $Front[$machinePos].Pneumatichose
+		FrontTorso(11) 	= $Front[$machinePos].Pneumaticsuctionpad
+		FrontTorso(12) 	= $Front[$machinePos].Robotcrash
+		FrontTorso(13) 	= $Front[$machinePos].Roboterr
+		FrontTorso(14) 	= $Front[$machinePos].Robotplacment
+		
+	
+		TypeFront(0) 		= "Camera - Error"
+		TypeFront(1)		= "Mechanic - Change Dash"
+		TypeFront(2)		= "Material - Empty"
+		TypeFront(3)		= "Material - Quality"
+		TypeFront(4)		= "Material - Wrong"
+		TypeFront(5)		= "Mechanic - Feeder"
+		TypeFront(6)		= "Mechanic - Part Nest"
+		TypeFront(7)		= "Mechanic - Spring"
+		TypeFront(8)		= "Pneumtic - Vacum"
+		TypeFront(9)		= "Pneumatic - Fitting"
+		TypeFront(10)		= "Penumatic - Hose"
+		TypeFront(11)		= "Pneumatic - Suction Pad"
+		TypeFront(12)		= "Robot - Crash"
+		TypeFront(13)		= "Robot - Error"
+		TypeFront(14)		= "Robot - Error Placment"
+
+				
+		For v=0 To 14
+			For n= 0 To 13
+			  If (FrontTorso(n) > FrontTorso(n+1)) Then
+			  	Dim tmpr1, tmpr2
+			  	tmpr1 = FrontTorso(n+1)
+			  	FrontTorso(n+1) = FrontTorso(n)
+			  	FrontTorso(n) = tmpr1
+			  	
+			  	tmpr2 = TypeFront(n+1)
+			  	TypeFront(n+1) = TypeFront(n)
+			  	TypeFront(n) = tmpr2
+			  	
+			  End If
+			Next
+		Next
+		
+		$Front[0].bar = FrontTorso(14)
+		$Front[1].bar = FrontTorso(13)
+		$Front[2].bar = FrontTorso(12)
+		$Front[3].bar = FrontTorso(11)
+		$Front[4].bar = FrontTorso(10)
+		
+		$Front[0].res = TypeFront(14)
+		$Front[1].res = TypeFront(13)
+		$Front[2].res = TypeFront(12)
+		$Front[3].res = TypeFront(11)
+		$Front[4].res = TypeFront(10) 
+
+ '------------------------------------------------------------------------------------------------------Hip Connector-------------------------------------------------------------------------------------------------------------------------'
+		HipConnector(0) 		= $Hip[$machinePos].Bowlhipstuck
+		HipConnector(1) 		= $Hip[$machinePos].Bowlhipupside
+		HipConnector(2) 		= $Hip[$machinePos].Electricfitting
+		HipConnector(3) 		= $Hip[$machinePos].Electrichose
+		HipConnector(4) 		= $Hip[$machinePos].Electricsensor
+		HipConnector(5) 		= $Hip[$machinePos].Electricslider
+		HipConnector(6) 		= $Hip[$machinePos].Materialchangedash
+		HipConnector(7) 		= $Hip[$machinePos].Materialempty
+		HipConnector(8) 		= $Hip[$machinePos].Materialquality
+		HipConnector(9) 		= $Hip[$machinePos].Materialwrong
+		HipConnector(10) 		= $Hip[$machinePos].Mechanicbraket
+		HipConnector(11) 		= $Hip[$machinePos].Mechanicgripper
+		HipConnector(12) 		= $Hip[$machinePos].Mechaniclinearguie
+		HipConnector(13) 		= $Hip[$machinePos].Mechanicnest
+		HipConnector(14) 		= $Hip[$machinePos].Mechnaicplacment
+		
+		TypeHip(0) 		= "Bowl - Hip Stuck"
+		TypeHip(1)		= "Bowl - Hip Upside"
+		TypeHip(2)		= "Electric - Fitting"
+		TypeHip(3)		= "Electric - Hose"
+		TypeHip(4)		= "Electric - Sensor"
+		TypeHip(5)		= "Electric - Slider"
+		TypeHip(6)		= "Material - Change Dash"
+		TypeHip(7)		= "Material - Empty"
+		TypeHip(8)		= "Material - Quality"
+		TypeHip(9)		= "Material - Wrong"
+		TypeHip(10)		= "Mechanic - Bracket"
+		TypeHip(11)		= "Mechanic - Gripper"
+		TypeHip(12)		= "Mechanic - Linear Guie"
+		TypeHip(13)		= "Mechanic - Nest"
+		TypeHip(14)		= "Mechanic - Error Placment"
+
+				
+		For a=0 To 14
+			For b= 0 To 13
+			  If (HipConnector(b) > HipConnector(b+1)) Then
+			  	Dim tmpr3, tmpr4
+			  	tmpr3 = HipConnector(b+1)
+			  	HipConnector(b+1) = HipConnector(b)
+			  	HipConnector(b) = tmpr3
+			  	
+			  	tmpr4= TypeHip(b+1)
+			  	TypeHip(b+1) = TypeHip(b)
+			  	TypeHip(b) = tmpr4
+			  	
+			  End If
+			Next
+		Next
+		
+		$Hip[0].bar = HipConnector(14)
+		$Hip[1].bar = HipConnector(13)
+		$Hip[2].bar = HipConnector(12)
+		$Hip[3].bar = HipConnector(11)
+		$Hip[4].bar = HipConnector(10)
+		
+		$Hip[0].res = TypeHip(14)
+		$Hip[1].res = TypeHip(13)
+		$Hip[2].res = TypeHip(12)
+		$Hip[3].res = TypeHip(11)
+		$Hip[4].res = TypeHip(10) 
+
+		
+ '------------------------------------------------------------------------------------------------------Arm-------------------------------------------------------------------------------------------------------------------------'
+		Armm(0) 		= $Arm[$machinePos].Cameraerr
+		Armm(1) 		= $Arm[$machinePos].Electricsensordeteksi
+		Armm(2) 		= $Arm[$machinePos].Electricsensorerr
+		Armm(3) 		= $Arm[$machinePos].Materiachangeldash
+		Armm(4) 		= $Arm[$machinePos].Materialempty
+		Armm(5) 		= $Arm[$machinePos].Materialquality
+		Armm(6) 		= $Arm[$machinePos].Materialwrong
+		Armm(7) 		= $Arm[$machinePos].Mechanicbraket
+		Armm(8) 		= $Arm[$machinePos].Mechanicclampingarm
+		Armm(9) 		= $Arm[$machinePos].Mechanicconveyorfeeder
+		Armm(10) 	= $Arm[$machinePos].Mechanicgripperarm
+		Armm(11) 	= $Arm[$machinePos].Mechaniclinearguie
+		Armm(12) 	= $Arm[$machinePos].Mechanicnestarm
+		Armm(13) 	= $Arm[$machinePos].Mechanicspringpluger
+		Armm(14) 	= $Arm[$machinePos].Mechanicstepfeeder
+		Armm(15) 	= $Arm[$machinePos].Mechanicstoppertransfer
+		Armm(16) 	= $Arm[$machinePos].Pneumaticblower
+		Armm(17) 	= $Arm[$machinePos].Pneumaticfitting
+		Armm(18) 	= $Arm[$machinePos].Pneumatichose
+		Armm(19) 	= $Arm[$machinePos].Pneumaticsilinder
+		Armm(20) 	= $Arm[$machinePos].Pneumaticsuctionpad
+		Armm(21) 	= $Arm[$machinePos].Pneumaticvacum
+		Armm(22)		= $Arm[$machinePos].ProgramStop
+		Armm(23) 	= $Arm[$machinePos].Robotcrash
+		Armm(24) 	= $Arm[$machinePos].Roboterr
+		Armm(25) 	= $Arm[$machinePos].Robotplacment
+		
+		
+			
+		TypeArm(0) 		= "Camera - Error"
+		TypeArm(1)		= "Electric - Sensor Failed Detection"
+		TypeArm(2)		= "Electric - Sensor Error"
+		TypeArm(3)		= "Material - Change Dash"
+		TypeArm(4)		= "Material - Empty"
+		TypeArm(5)		= "Material - Quality"
+		TypeArm(6)		= "Material - Wrong"
+		TypeArm(7)		= "Mechanic - Bracket"
+		TypeArm(8)		= "Mechanic - Clamping Arm"
+		TypeArm(9)		= "Mechanic - Conveyor Feeder"
+		TypeArm(10)	= "Mechanic - Gripper Arm"
+		TypeArm(11)	= "Mechanic - Linear Guie"
+		TypeArm(12)	= "Mechanic - Nest Arm"
+		TypeArm(13)	= "Mechanic - Spring Pluger"
+		TypeArm(14)	= "Mechanic - Step Feeder"
+		TypeArm(15)	= "Mechanic - Stopper Transfer"
+		TypeArm(16)	= "Pneumatic - Blower"
+		TypeArm(17)	= "Pneumatic - Fitting"
+		TypeArm(18)	= "Pneumatic - Hose"
+		TypeArm(19)	= "Pneumatic - Silinder"
+		TypeArm(20)	= "Pneumatic - Suctionpad"
+		TypeArm(21)	= "Pneumatic - Vacum"
+		TypeArm(22)	= "Program - Stop"
+		TypeArm(23)	= "Robot - Crash"
+		TypeArm(24)	= "Robot - Error"
+		TypeArm(25)	= "Robot - Error Placment"
+
+				
+		For c=0 To 25
+			For d= 0 To 24
+			  If (Armm(d) > Armm(d+1)) Then
+			  	Dim tmpr5, tmpr6
+			  	tmpr5= Armm(d+1)
+			  	Armm(d+1) = Armm(d)
+			  	Armm(d) = tmpr5
+			  	
+			  	tmpr6= TypeArm(d+1)
+			  	TypeArm(d+1) = TypeArm(d)
+			  	TypeArm(d) = tmpr6
+			  	
+			  End If
+			Next
+		Next
+		
+		$Arm[0].bar = Armm(25)
+		$Arm[1].bar = Armm(24)
+		$Arm[2].bar = Armm(23)
+		$Arm[3].bar = Armm(22)
+		$Arm[4].bar = Armm(21)
+		
+		$Arm[0].res = TypeArm(25)
+		$Arm[1].res = TypeArm(24)
+		$Arm[2].res = TypeArm(23)
+		$Arm[3].res = TypeArm(22)
+		$Arm[4].res = TypeArm(21) 
+
+
+		
+ '------------------------------------------------------------------------------------------------------Rear Torso And Dipping-------------------------------------------------------------------------------------------------------------------------'
+		Rear(0) 		= $RearT[$machinePos].Cameraerr
+		Rear(1) 		= $RearT[$machinePos].Materialchangedash
+		Rear(2) 		= $RearT[$machinePos].Materialempty
+		Rear(3) 		= $RearT[$machinePos].Materialquality
+		Rear(4) 		= $RearT[$machinePos].Materialwrong
+		Rear(5) 		= $RearT[$machinePos].Mechanicbraketbroken
+		Rear(6) 		= $RearT[$machinePos].Mechanicclamprbroken
+		Rear(7) 		= $RearT[$machinePos].Mechanicdippingnestmove
+		Rear(8) 		= $RearT[$machinePos].Mechanicethly
+		Rear(9) 		= $RearT[$machinePos].Mechanicgaptorso
+		Rear(10) 	= $RearT[$machinePos].Mechanicnestbroken
+		Rear(11) 	= $RearT[$machinePos].Mechanicspringpluger
+		Rear(12) 	= $RearT[$machinePos].Mechanicstepfeeder
+		Rear(13) 	= $RearT[$machinePos].Mechanictorsostick
+		Rear(14) 	= $RearT[$machinePos].Mechanictransferstuck
+		Rear(15) 	= $RearT[$machinePos].Pneumaticfitting
+		Rear(16) 	= $RearT[$machinePos].Pneumatichose
+		Rear(17) 	= $RearT[$machinePos].Pneumaticsilinder
+		Rear(18) 	= $RearT[$machinePos].Pneumaticsuctionpad
+		Rear(19) 	= $RearT[$machinePos].Pneumaticvacum
+		Rear(20) 	= $RearT[$machinePos].ProgramStop
+		Rear(21) 	= $RearT[$machinePos].Robotcrash
+		Rear(22)	= $RearT[$machinePos].Roboterr
+		Rear(23) 	= $RearT[$machinePos].Robotplacment
+			
+		
+			
+		TypeRear(0) 	= "Camera - Error"
+		TypeRear(1)		= "Material - Change Dash"
+		TypeRear(2)		= "Material - Empty"
+		TypeRear(3)		= "Material - Quality"
+		TypeRear(4)		= "Material - Wrong"
+		TypeRear(5)		= "Mechanic - Braket Broken"
+		TypeRear(6)		= "Mechanic - Clamp Broken"
+		TypeRear(7)		= "Mechanic - Dipping Nest Move"
+		TypeRear(8)		= "Mechanic - Ethly"
+		TypeRear(9)		= "Mechanic - Gap Torso"
+		TypeRear(10)	= "Mechanic- Nest Broken"
+		TypeRear(11)	= "Mechanic - Spring Pluger"
+		TypeRear(12)	= "Mechanic - Step Feeder"
+		TypeRear(13)	= "Mechanic - Torso Stick"
+		TypeRear(14)	= "Mechanic - Transfer Stuck"
+		TypeRear(15)	= "Pneumatic - Fitting"
+		TypeRear(16)	= "Pneumatic - Hose"
+		TypeRear(17)	= "Pneumatic - Silinder"
+		TypeRear(18)	= "Pneumatic - Suction Pad"
+		TypeRear(19)	= "Pneumatic - Vacum"
+		TypeRear(20)	= "Program - Stop"
+		TypeRear(21)	= "Robot - Crash"
+		TypeRear(22)	= "Robot - Error"
+		TypeRear(23)	= "Robot - Error Placment"
+
+				
+		For e=0 To 23
+			For f= 0 To 22
+			  If (Rear(f) > Rear(f+1)) Then
+			  	Dim tmpr7, tmpr8
+			  	tmpr7 = Rear(f+1)
+			  	Rear(f+1) = Rear(f)
+			  	Rear(f) = tmpr7
+			  	
+			  	tmpr8= TypeRear(f+1)
+			  	TypeRear(f+1) = TypeRear(f)
+			  	TypeRear(f) = tmpr8
+			  	
+			  End If
+			Next
+		Next
+		
+		$RearT[0].bar = Rear(23)
+		$RearT[1].bar = Rear(22)
+		$RearT[2].bar = Rear(21)
+		$RearT[3].bar = Rear(20)
+		$RearT[4].bar = Rear(19)
+		
+		$RearT[0].res = TypeRear(23)
+		$RearT[1].res = TypeRear(22)
+		$RearT[2].res = TypeRear(21)
+		$RearT[3].res = TypeRear(20)
+		$RearT[4].res = TypeRear(19) 
+
+'------------------------------------------------------------------------------------------------------Neck Connector-------------------------------------------------------------------------------------------------------------------------'
+		NeckConnector(0) 	= $Neck[$machinePos].Bowlneckstuck
+		NeckConnector(1) 	= $Neck[$machinePos].Bowlneckupside
+		NeckConnector(2) 	= $Neck[$machinePos].Electricsensorerr
+		NeckConnector(3) 	= $Neck[$machinePos].Materialchangedash
+		NeckConnector(4) 	= $Neck[$machinePos].Materialempty
+		NeckConnector(5) 	= $Neck[$machinePos].Materialquality
+		NeckConnector(6) 	= $Neck[$machinePos].Materialwrong
+		NeckConnector(7) 	= $Neck[$machinePos].Mechanicbraketbroken
+		NeckConnector(8) 	= $Neck[$machinePos].Mechanicgripper
+		NeckConnector(9) 	= $Neck[$machinePos].Mechaniclinearguie
+		NeckConnector(10) 	= $Neck[$machinePos].Mechanicneckplacment
+		NeckConnector(11) 	= $Neck[$machinePos].Mechanicnestbroken
+		NeckConnector(12) 	= $Neck[$machinePos].Pneumaticfitting
+		NeckConnector(13) 	= $Neck[$machinePos].Pneumatichose
+		NeckConnector(14) 	= $Neck[$machinePos].Pneumaticsilinder
+
+			
+		TypeNeck(0) 		= "Bowl - Neck Stuck"
+		TypeNeck(1) 		= "Bowl - Neck Upside"
+		TypeNeck(2) 		= "Electric - Sensor Error"
+		TypeNeck(3) 		= "Material - Change Dash"
+		TypeNeck(4) 		= "Material - Empty"
+		TypeNeck(5) 		= "Material - Quality"
+		TypeNeck(6) 		= "Material - Wrong"
+		TypeNeck(7) 		= "Mechanic - Bracket Broken "
+		TypeNeck(8)		= "Mechanic - Gripper"
+		TypeNeck(9) 		= "Mechanic -  Linear Guie"
+		TypeNeck(10) 	= "Mechanic - Error Placment"
+		TypeNeck(11) 	= "Mechanic - Nest Broken"
+		TypeNeck(12)		= "Pneumatic - Fitting"
+		TypeNeck(13) 	= "Pneumatic - Hose"
+		TypeNeck(14) 	= "Pneumatic - Silinder"
+		
+				
+		For g=0 To 14
+			For h= 0 To 13
+			  If (NeckConnector(h) > NeckConnector(h+1)) Then
+			  	Dim tmpr9, tmpr10
+			  	tmpr9 = NeckConnector(h+1)
+			  	NeckConnector(h+1) = NeckConnector(h)
+			  	NeckConnector(h) = tmpr9
+			  	
+			  	tmpr10 = TypeNeck(h+1)
+			  	TypeNeck(h+1) = TypeNeck(h)
+			  	TypeNeck(h) = tmpr10
+			  	
+			  End If
+			Next
+		Next
+		
+		$Neck[0].bar = NeckConnector(14)
+		$Neck[1].bar = NeckConnector(13)
+		$Neck[2].bar = NeckConnector(12)
+		$Neck[3].bar = NeckConnector(11)
+		$Neck[4].bar = NeckConnector(10)
+		
+		$Neck[0].res = TypeNeck(14)
+		$Neck[1].res = TypeNeck(13)
+		$Neck[2].res = TypeNeck(12)
+		$Neck[3].res = TypeNeck(11)
+		$Neck[4].res = TypeNeck(10) 
+'-------------------------------------------------------------------------------------------------------------Leg-------------------------------------------------------------------------------------------------------------------------'
+		Legg(0) 		= $Leg[$machinePos].Electricsensorerr
+		Legg(1) 		= $Leg[$machinePos].Mechaniccbraketbroken
+		Legg(2) 		= $Leg[$machinePos].Mechanicconveyor
+		Legg(3) 		= $Leg[$machinePos].Mechaniccoverbroken
+		Legg(4) 		= $Leg[$machinePos].Mechanicfailedtransfer
+		Legg(5) 		= $Leg[$machinePos].Mechanicgripperbroken
+		Legg(6) 		= $Leg[$machinePos].Mechanicgripperfailtakeleg
+		Legg(7) 		= $Leg[$machinePos].Mechaniclegdoblesupply
+		Legg(8) 		= $Leg[$machinePos].Mechaniclegstuck
+		Legg(9) 		= $Leg[$machinePos].Mechanicsensordeteksi
+		Legg(10) 	= $Leg[$machinePos].Mechanicstepfeeder
+		Legg(11) 	= $Leg[$machinePos].Mechanicwrongpartinconveyor
+		Legg(12) 	= $Leg[$machinePos].Pneumaticfitting
+		Legg(13) 	= $Leg[$machinePos].Pneumatichose
+		Legg(14) 	= $Leg[$machinePos].Pneumaticsilinder
+		Legg(15) 	= $Leg[$machinePos].Pneumaticstopperrotary
+		Legg(16) 	= $Leg[$machinePos].Pneumaticvalve
+		
+			
+		TypeLeg(0) 		= "Electric - Sensor Error"
+		TypeLeg(1) 		= "Mechanic - Braket Broken"
+		TypeLeg(2) 		= "Mechanic - Conveyor"
+		TypeLeg(3) 		= "Mechanic - Cover Broken"
+		TypeLeg(4) 		= "Mechanic - Failed Transfer"
+		TypeLeg(5) 		= "Mechanic - Gripper Broken"
+		TypeLeg(6) 		= "Mechanic - Gripper Fail Take Leg"
+		TypeLeg(7) 		= "Mechanic - Leg Double Supply"
+		TypeLeg(8) 		= "Mechanic - Leg Stuck"
+		TypeLeg(9) 		= "Mechanic - Sensor Failed Detection"
+		TypeLeg(10) 	= "Mechanic - Step Feeder"
+		TypeLeg(11) 	= "Mechanic - Wrong Part in Conveyor"
+		TypeLeg(12) 	= "Pneumatic - Fitting"
+		TypeLeg(13) 	= "Pneumatic - Hose"
+		TypeLeg(14) 	= "Pneumatic - Silinder"
+		TypeLeg(15) 	= "Pneumatic - Stopper Rotary"
+		TypeLeg(16) 	= "Pneumatic - Valve"
+					
+		For k=0 To 16
+			For l= 0 To 15
+			  If (Legg(l) > Legg(l+1)) Then
+			  	Dim tmprr, tmprd
+			  	tmprr = Legg(l+1)
+			  	Legg(l+1) = Legg(l)
+			  	Legg(l) = tmprr
+			  	
+			  	tmprd = TypeLeg(l+1)
+			  	TypeLeg(l+1) = TypeLeg(l)
+			  	TypeLeg(l) = tmprd
+			  	
+			  End If
+			Next
+		Next
+		
+		$Leg[0].bar = Legg(16)
+		$Leg[1].bar = Legg(15)
+		$Leg[2].bar = Legg(14)
+		$Leg[3].bar = Legg(13)
+		$Leg[4].bar = Legg(12)
+	
+		$Leg[0].res = TypeLeg(16)
+		$Leg[1].res = TypeLeg(15)
+		$Leg[2].res = TypeLeg(14)
+		$Leg[3].res = TypeLeg(13)
+		$Leg[4].res = TypeLeg(12) 
+		
+'-------------------------------------------------------------------------------------------------------------Unloading-------------------------------------------------------------------------------------------------------------------------'
+		Unloading(0) 	= $Unload[$machinePos].Electricsensordeteksi
+		Unloading(1) 	= $Unload[$machinePos].Electricsensorerr
+		Unloading(2) 	= $Unload[$machinePos].Mechanicbin
+		Unloading(3) 	= $Unload[$machinePos].Mechanicbraketbroken
+		Unloading(4) 	= $Unload[$machinePos].Mechanicgripperbroken
+		Unloading(5) 	= $Unload[$machinePos].Mechnaicconveyorstuck
+		Unloading(6) 	= $Unload[$machinePos].Programstop
+		Unloading(7) 	= $Unload[$machinePos].Robotcrash
+		Unloading(8) 	= $Unload[$machinePos].Roboterr
+				
+			
+		TypeUnload(0) 	= "Electric - Sensor Failed Detection"
+		TypeUnload(1) 	= "Electric - Sensor Error"
+		TypeUnload(2) 	= "Electric - Sensor Error"
+		TypeUnload(3) 	= "Mechanic - Bracket Broken"
+		TypeUnload(4) 	= "Mechanic - Gripper Broken"
+		TypeUnload(5) 	= "Mechnaic - Conveyor Stuck"
+		TypeUnload(6) 	= "Program - Stop"
+		TypeUnload(7) 	= "Robot - Crash"
+		TypeUnload(8) 	= "Robot - Error"
+							
+		For x=0 To 8
+			For y= 0 To 7
+			  If (Unloading(y) > Unloading(y+1)) Then
+			  	Dim tmprre, tmprde
+			  	tmprre = Unloading(y+1)
+			  	Unloading(y+1) = Unloading(y)
+			  	Unloading(y) = tmprre
+			  	
+			  	tmprde = TypeUnload(y+1)
+			  	TypeUnload(y+1) = TypeUnload(y)
+			  	TypeUnload(y) = tmprde
+			  	
+			  End If
+			Next
+		Next
+		
+		$Unload[0].bar = Unloading(8)
+		$Unload[1].bar = Unloading(7)
+		$Unload[2].bar = Unloading(6)
+		$Unload[3].bar = Unloading(5)
+		$Unload[4].bar = Unloading(4)
+	
+		$Unload[0].res = TypeUnload(8)
+		$Unload[1].res = TypeUnload(7)
+		$Unload[2].res = TypeUnload(6)
+		$Unload[3].res = TypeUnload(5)
+		$Unload[4].res = TypeUnload(4) 
+
+

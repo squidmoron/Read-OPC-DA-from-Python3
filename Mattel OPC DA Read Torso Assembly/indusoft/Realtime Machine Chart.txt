@@ -1,0 +1,207 @@
+'Variables available only for this group can be declared here.
+Dim problem(11), reason(11),i,j
+Dim Reject(18), TypeReject(18), v, o,Z
+Dim resIssue(8), barIssue(8),k,l
+
+'The code configured here is executed while the condition configured in the Execution field is TRUE.
+
+'-----------------------------------------------------------------------------------------Downtime Trend-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+problem(0) = $TimeProb[$machinePos].FrontTorso/(60)
+problem(1) = $TimeProb[$machinePos].HipConnector/(60)
+problem(2) = $TimeProb[$machinePos].Arm/(60)
+problem(3) = $TimeProb[$machinePos].NeckConnector/(60)
+problem(4) = $TimeProb[$machinePos].RearTorsoDipping/(60)
+problem(5) = $TimeProb[$machinePos].Leag/(60)
+problem(6) = $TimeProb[$machinePos].Unloading/(60)
+problem(7) = $TimeProb[$machinePos].EmergencyDur/(60)
+problem(8) = $TimeProb[$machinePos].ChangeOver/(60)
+problem(9) = $TimeProb[$machinePos].PM/(60)
+problem(10) = $machStatus[$machinePos].idle/(60)
+
+reason(0) = "Front Torso"
+reason(1) = "Hip Connector"
+reason(2) = "Arm"
+reason(3) = "Neck Connector"
+reason(4) = "Rear + Dipping"
+reason(5) = "Leg"
+reason(6) = "Unloading"
+reason(7) = "Emergency"
+reason(8) = "Changeover"
+reason(9) = "PM"
+reason(10) = "Idle"
+
+For i=0 To 10
+	For j = 0 To 9
+	  If (problem(j) > problem(j+1)) Then
+	  	Dim tmp, tmpr
+	  	tmp = problem(j+1)
+	  	problem(j+1) = problem(j)
+	  	problem(j) = tmp
+	  	
+	  	tmpr = reason(j+1)
+	  	reason(j+1) = reason(j)
+	  	reason(j) = tmpr
+	  	
+	  End If
+	Next
+Next
+
+$MachChart[0].barChart1 = problem(10)
+$MachChart[1].barChart1 = problem(9)
+$MachChart[2].barChart1 = problem(8)
+$MachChart[3].barChart1 = problem(7)
+$MachChart[4].barChart1 = problem(6)
+
+$MachChart[0].barChartReason1 = reason(10)
+$MachChart[1].barChartReason1 = reason(9)
+$MachChart[2].barChartReason1 = reason(8)
+$MachChart[3].barChartReason1 = reason(7)
+$MachChart[4].barChartReason1 = reason(6)
+
+
+'-----------------------------------------------------------------------------------------Reject Trend-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Reject(0) = $Rtrend[$machinePos].TR_BlackSpot  
+Reject(1) = $Rtrend[$machinePos].TR_BrokenHipBall 
+Reject(2) = $Rtrend[$machinePos].TR_BrokenLower 
+Reject(3) = $Rtrend[$machinePos].TR_BrokenPart 
+Reject(4) = $Rtrend[$machinePos].TR_Bubble 
+Reject(5) = $Rtrend[$machinePos].TR_ColourMismatch 
+Reject(6) = $Rtrend[$machinePos].TR_GapTorso 
+Reject(7) = $Rtrend[$machinePos].TR_ImprorerFunction 
+Reject(8) = $Rtrend[$machinePos].TR_LoosePart 
+Reject(9) = $Rtrend[$machinePos].TR_MissingArm 
+Reject(10) = $Rtrend[$machinePos].TR_MissingHipBall 
+Reject(11) = $Rtrend[$machinePos].TR_MissingLeg 
+Reject(12) = $Rtrend[$machinePos].TR_MissingNeck 
+Reject(13) = $Rtrend[$machinePos].TR_MissingRearTorso 
+Reject(14) = $Rtrend[$machinePos].TR_Scratch 
+Reject(15) = $Rtrend[$machinePos].TR_ShoerShot 
+Reject(16) = $Rtrend[$machinePos].TR_SolventSmear
+Reject(17) = $Rtrend[$machinePos].TR_WrongAssy 
+
+
+TypeReject(0) = " Black Spot "
+TypeReject(1) = " Broken Hip Ball "
+TypeReject(2) = " Broken Lower "
+TypeReject(3) = " BrokenPart "
+TypeReject(4) = " Bubble "
+TypeReject(5) = " Colour Mismatch "
+TypeReject(6) = " Gap Torso "
+TypeReject(7) = " Improrer Function "
+TypeReject(8) = " Loose Part "
+TypeReject(9) = " Missing Arm "
+TypeReject(10) = " Missing Hip Ball "
+TypeReject(11) = " Missing Leg "
+TypeReject(12) = " Missing Neck"
+TypeReject(13) = " Missing Rear Torso "
+TypeReject(14) = " Scratch "
+TypeReject(15) = " Short shot"
+TypeReject(16) = " Solvent Smear "
+TypeReject(17) = " Missing Assy "
+
+
+For v=0 To 17
+	For o = 0 To 16
+	  If (Reject(o) > Reject(o+1)) Then
+	  	Dim tmpr1, tmpr2
+	  	tmpr1 = Reject(o+1)
+	  	Reject(o+1) = Reject(o)
+	  	Reject(o) = tmpr1
+	  	
+	  	tmpr2 = TypeReject(o+1)
+	  	TypeReject(o+1) = TypeReject(o)
+	  	TypeReject(o) = tmpr2
+	  	
+	  End If
+	Next
+Next
+
+$machChart[0].barChartReject = Reject(17)
+$machChart[1].barChartReject = Reject(16)
+$machChart[2].barChartReject = Reject(15)
+$machChart[3].barChartReject = Reject(14)
+$machChart[4].barChartReject = Reject(13)
+
+$machChart[4].barChartReasonReject = TypeReject(17)
+$machChart[3].barChartReasonReject = TypeReject(16)
+$machChart[2].barChartReasonReject = TypeReject(15)
+$machChart[1].barChartReasonReject = TypeReject(14)
+$machChart[0].barChartReasonReject = TypeReject(13) 
+
+
+
+
+'--------------------------------------------------------------------------------------------Issue Category---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+barIssue(0) = $TimeProb[$machinePos].RobotIssue/60
+barIssue(1) = $TimeProb[$machinePos].CameraIssue/60
+barIssue(2) = $TimeProb[$machinePos].MechanicalIssue/60
+barIssue(3) = $TimeProb[$machinePos].ElectricalIssue/60
+barIssue(4) = $TimeProb[$machinePos].PneumaticIssue/60
+barIssue(5) = $TimeProb[$machinePos].BowlFeederIssue/60
+barIssue(6) = $TimeProb[$machinePos].MaterialIssue/60
+barIssue(7) = $TimeProb[$machinePos].ProgramIssue/60
+
+
+resIssue(0) = "Robot"
+resIssue(1) = "Camera"
+resIssue(2) = "Mechanical"
+resIssue(3) = "Electrical"
+resIssue(4) = "Pneumatic"
+resIssue(5) = "Bowl Feeder"
+resIssue(6) = "Material"
+resIssue(7) = "Program"
+
+For k=0 To 7
+	For l = 0 To 6
+	  If (problem(l) > problem(l+1)) Then
+	  	Dim tmp2, tmpr3
+	  	tmp2 = barIssue(l+1)
+	  	barIssue(l+1) = barIssue(l)
+	  	barIssue(l) = tmp2
+	  	
+	  	tmpr3 = resIssue(l+1)
+	  	resIssue(l+1) = resIssue(l)
+	  	resIssue(l) = tmpr3
+	  End If
+	Next
+Next
+
+$MachChart[0].barTopIssueCategory = barIssue(7)
+$MachChart[1].barTopIssueCategory = barIssue(6)
+$MachChart[2].barTopIssueCategory = barIssue(5)
+$MachChart[3].barTopIssueCategory = barIssue(4)
+$MachChart[4].barTopIssueCategory = barIssue(3)
+
+$MachChart[0].resTopIssueCategory = resIssue(7)
+$MachChart[1].resTopIssueCategory = resIssue(6)
+$MachChart[2].resTopIssueCategory = resIssue(5)
+$MachChart[3].resTopIssueCategory = resIssue(4)
+$MachChart[4].resTopIssueCategory = resIssue(3)
+
+'----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+'Average Cycle Time Station'
+'Rata2 Cycle time setiap station dari yang tertinggi'
+
+
+$avgTrend[$machinePos].res_FrontTorso = " Front Torso "
+$avgTrend[$machinePos].res_HipConnector = " Hip Connector "
+$avgTrend[$machinePos].res_arm = " Arm "
+$avgTrend[$machinePos].res_NeckConnector = " Neck Connector "
+$avgTrend[$machinePos].res_RearDipping = " Rear Dipping "
+$avgTrend[$machinePos].res_Leg = " Leg "
+$avgTrend[$machinePos].res_Unloading = " Unloading "
+
+
+'$avgTrend[$machinePos].bar_FrontTorso = $avgStation[$machinePos].FrontTorso
+'$avgTrend[$machinePos].bar_HipConnector = $avgStation[$machinePos].HipConnector
+'$avgTrend[$machinePos].bar_arm = $avgStation[$machinePos].arm
+'$avgTrend[$machinePos].bar_NeckConnector = $avgStation[$machinePos].NeckConnector
+'$avgTrend[$machinePos].bar_RearDipping = $avgStation[$machinePos].RearDipping
+'$avgTrend[$machinePos].bar_Leg = $avgStation[$machinePos].Leg
+'$avgTrend[$machinePos].bar_Unloading = $avgStation[$machinePos].Unloading
+
+
