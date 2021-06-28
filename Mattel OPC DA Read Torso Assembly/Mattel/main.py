@@ -93,7 +93,7 @@ def readOPC(variable) :
 	opc.close()
 #------------------------------------------------------------------------
 
-def readavgCT() :
+def readalldata() :
 	try:
 		global AVG_CTArmAssy
 		global AVG_CTDipping
@@ -103,26 +103,6 @@ def readavgCT() :
 		global AVG_CTNeckConnector
 		global AVG_CTUnload
 
-		AVG_CTArmAssy=readOPC('PLC_GW3..AVG_CTArmAssy')
-		AVG_CTDipping=readOPC('PLC_GW3..AVG_CTDipping')
-		AVG_CTFrontTorso=readOPC('PLC_GW3..AVG_CTFrontTorso')
-		AVG_CTHipConnector=readOPC('PLC_GW3..AVG_CTHipConnector')
-		AVG_CTLegAssy=readOPC('PLC_GW3..AVG_CTLegAssy')
-		AVG_CTNeckConnector=readOPC('PLC_GW3..AVG_CTNeckConnector')
-		AVG_CTUnload=readOPC('PLC_GW3..AVG_CTUnload')
-		#print(AVG_CTArmAssy.value)
-		#print(AVG_CTDipping.value)
-		#print(AVG_CTFrontTorso.value)
-		#print(AVG_CTHipConnector.value)
-		#print(AVG_CTLegAssy.value)
-		#print(AVG_CTNeckConnector.value)
-		#print(AVG_CTUnload.value)
-	except:
-		print("Can not read opc AVG_CT data or data equal to Not Good")
-#------------------------------------------------------------------------
-
-def readDTCount() :
-	try:
 		global DT_CountDipping
 		global DT_CountLeg
 		global DT_CountArm
@@ -130,24 +110,6 @@ def readDTCount() :
 		global DT_CountHipConnector
 		global DT_CountUnloading
 
-		DT_CountDipping=readOPC('PLC_GW3..DT_CountDipping')
-		DT_CountLeg=readOPC('PLC_GW3..DT_CountLeg')
-		DT_CountArm=readOPC('PLC_GW3..DT_CountArm')
-		DT_CountFrontTorso=readOPC('PLC_GW3..DT_CountFrontTorso')
-		DT_CountHipConnector=readOPC('PLC_GW3..DT_CountHipConnector')
-		DT_CountUnloading=readOPC('PLC_GW3..DT_CountUnloading')
-		#print(DT_CountDipping.value)
-		#print(DT_CountLeg.value)
-		#print(DT_CountArm.value)
-		#print(DT_CountFrontTorso.value)
-		#print(DT_CountHipConnector.value)
-		#print(DT_CountUnloading.value)
-	except:
-		print("Can not read opc DT_Count data or data equal to Not Good")
-#------------------------------------------------------------------------
-
-def readDTStation() :
-	try:
 		global GVI_DownTimeFrontTorso
 		global GVI_DownTimeHip
 		global GVI_DownTimeArm
@@ -159,6 +121,21 @@ def readDTStation() :
 		global Gv_DownTime
 		global GV_IntDownTime
 
+		AVG_CTArmAssy=readOPC('PLC_GW3..AVG_CTArmAssy')
+		AVG_CTDipping=readOPC('PLC_GW3..AVG_CTDipping')
+		AVG_CTFrontTorso=readOPC('PLC_GW3..AVG_CTFrontTorso')
+		AVG_CTHipConnector=readOPC('PLC_GW3..AVG_CTHipConnector')
+		AVG_CTLegAssy=readOPC('PLC_GW3..AVG_CTLegAssy')
+		AVG_CTNeckConnector=readOPC('PLC_GW3..AVG_CTNeckConnector')
+		AVG_CTUnload=readOPC('PLC_GW3..AVG_CTUnload')
+
+		DT_CountDipping=readOPC('PLC_GW3..DT_CountDipping')
+		DT_CountLeg=readOPC('PLC_GW3..DT_CountLeg')
+		DT_CountArm=readOPC('PLC_GW3..DT_CountArm')
+		DT_CountFrontTorso=readOPC('PLC_GW3..DT_CountFrontTorso')
+		DT_CountHipConnector=readOPC('PLC_GW3..DT_CountHipConnector')
+		DT_CountUnloading=readOPC('PLC_GW3..DT_CountUnloading')
+
 		GVI_DownTimeFrontTorso=readOPC('PLC_GW3..GVI_DownTimeFrontTorso')
 		GVI_DownTimeHip=readOPC('PLC_GW3..GVI_DownTimeHip')
 		GVI_DownTimeArm=readOPC('PLC_GW3..GVI_DownTimeArm')
@@ -169,20 +146,10 @@ def readDTStation() :
 		GVI_ResetValue=readOPC('PLC_GW3..GVI_ResetValue')
 		Gv_DownTime=readOPC('PLC_GW3..Gv_DownTime')
 		GV_IntDownTime=readOPC('PLC_GW3..GV_IntDownTime')
-		#print('GVI_DownTimeFrontTorso',GVI_DownTimeFrontTorso.value)
-		#print('GVI_DownTimeHip',GVI_DownTimeHip.value)
-		#print('GVI_DownTimeArm',GVI_DownTimeArm.value)
-		#print('GVI_DownTimeNeck',GVI_DownTimeNeck.value)
-		#print('GVI_DownTimeDipping',GVI_DownTimeDipping.value)
-		#print('GVI_DownTimeLeg',GVI_DownTimeLeg.value)
-		#print('GVI_TotalCycleTime',GVI_TotalCycleTime.value)
-		#print('GVI_ResetValue',GVI_ResetValue.value)
-		#print('Gv_DownTime',Gv_DownTime.value)
-		#print('GV_IntDownTime',GV_IntDownTime.value)
+
 	except:
 		print("Can not read opc AVG_CT data or data equal to Not Good")
-		#FrontTorso_TimeOut=readOPC('PLC_GW3..FrontTorso_TimeOut')
-		#print(FrontTorso_TimeOut.value)
+
 #------------------------------------------------------------------------
 
 def sendDB_DTCount(MC,dipping,leg,arm,fronttorso,hipconnector,unloading):
@@ -249,19 +216,16 @@ def checktime():
 	elif (current_time >= "07:11:00") and (current_time < "15:39:00") :
 		flage=0
 #----------------------------WRITE SHIFT--------------------------------
-	if (current_time >= "15:40:00") and (current_time < "22:40:00") :
+	if (current_time >= "15:40:00") and (current_time < "22:30:00") :
 		shift='S3'
-	elif (current_time >= "22:40:00") and (current_time < "07:10:00") :
+	elif ((current_time >= "22:30:00") and (current_time < "23:59:59")) or ((current_time >= "00:00:00") and (current_time < "07:10:00")):
 		shift='S1'
-	elif (current_time >= "22:41:00") and (current_time < "07:09:00") :
+	elif (current_time >= "07:10:00") and (current_time < "15:40:00") :
 		shift='S2'
 
 #------------------------------------------------------------------------
 
 while 1:
 	#print("success")
-
-	readavgCT()
-	readDTCount()
-	readDTStation()
+	readalldata()
 	checktime()
