@@ -75,12 +75,6 @@ client = InfluxDBClient('wckr00157648a', 8086, 'admin', 'Mattel01', 'TA_trial')
 
 #------------------------------------------------------------------------
 
-def parsing(x):
-  x=x.replace(' ','').replace("'","").replace('(','').replace(')','')
-  x=x.split(',')
-  return x
-#------------------------------------------------------------------------
-
 def readOPC(variable) :
 	opc.connect(host)
 	try	:

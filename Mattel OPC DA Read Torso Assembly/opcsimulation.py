@@ -11,6 +11,8 @@ import Pyro4
 import time
 import datetime
 import pywintypes
+from multiprocessing import Process
+from parsing import parsing
 
 import influxdb
 import json
@@ -26,9 +28,9 @@ pywintypes.datetime = pywintypes.TimeType
 opc = OpenOPC.client()
 
 #-----for trial read data opc
-opc.connect(host)
-x=opc.read('Random.Real8')
-print(x)
+#opc.connect(host)
+#x=opc.read('Random.Real8')
+#print(x)
 
 AVG_CTArm				=''
 AVG_CTFront			=''
@@ -43,17 +45,13 @@ class dataOPC:
     self.qualityOPC = qualityOPC
     self.datetimeOPC = datetimeOPC
 #------------------------------------------------------------------------
-def parsing(x):
-  x=x.replace(' ','').replace("'","").replace('(','').replace(')','')
-  x=x.split(',')
-  return x
-#------------------------------------------------------------------------
 def readOPC(variable) :
 	opc.connect(host)
 	try	:
 		value=parsing(str(opc.read(variable)))
 		value=dataOPC(value[0],value[1],value[2])
 		if(value.qualityOPC=="Good"):
+			#print(value.valueOPC)
 			return value
 	except :
 		print("============================= read problem =============================")
@@ -63,7 +61,9 @@ def readOPC(variable) :
 while 1 :
 	try:
 		AVG_CTArm=readOPC('Random.Real8')
-		print(round(float(AVG_CTArm.valueOPC),2))
-	except:
+		print("avg CT: ",str(round(float(AVG_CTArm.valueOPC),2)))
+	except :
 		print("Can not read opc data or data equal to Not Good")
 	time.sleep(.1)
+
+tes()
