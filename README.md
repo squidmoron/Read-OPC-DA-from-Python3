@@ -37,4 +37,4 @@
 
 4) You got your library for pyodbc
 	
-### For python script to Insert, Update, and Select Database from MS SQL, you can find script [Here]()
+### For python script to Insert, Update, and Select Database from MS SQL, you can find script [Here](https://github.com/squidmoron/Read-OPC-DA-from-Python3/tree/main/Python%20odbc%20library)
