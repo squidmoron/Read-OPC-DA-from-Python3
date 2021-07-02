@@ -10,7 +10,7 @@
 
 3) INSTALL PYWIN32 : [Download Here](https://github.com/mhammond/pywin32/releases)
 
-4) DOWNLOAD AND REGISTER THE DLL:  [Download Here](http://www.gray-box.net/download_daawrapper.php)
+4) DOWNLOAD AND REGISTER THE DLL:  [Download Here](http://www.gray-box.net/download_daawrapper.php) or you can Download from my repository
    
    Then Write a Command: regsvr32 gbda_aut.dll  [From OPC DA Auto Wrapper](https://github.com/squidmoron/Read-OPC-DA-from-Python3/tree/main/OPC%20DA%20Wrapper)
 
