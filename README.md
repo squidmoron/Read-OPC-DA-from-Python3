@@ -27,7 +27,7 @@
 
 ### To communication from python to SQL Server you need to install PyODBC library
 
-1) copy file "pyodbc-4.0.30-cp39-cp39-win32.whl" you can search on //folder "Python odbc library"
+1) copy file "pyodbc-4.0.30-cp39-cp39-win32.whl" you can search on folder [Python odbc library](https://github.com/squidmoron/Read-OPC-DA-from-Python3/tree/main/Python%20odbc%20library)
 
 2) open shell and run : pip install <PATH>\pyodbc-4.0.30-cp39-cp39-win32.whl
 
