@@ -22,7 +22,7 @@
 
 	Install Matrikon OPC Explorer [Download Here](https://1drv.ms/u/s!Au49EKCDWwgScCkR-iZEVmW8I5I?e=fpWImH)
 
-### If you wanna try to read an OPC DA variables with python, you can use a Matrikon OPC Simulator and try with "opcsimulation.py" script [Here](https://github.com/squidmoron/Read-OPC-DA-from-Python3/blob/main/Mattel%20OPC%20DA%20Read%20Torso%20Assembly/opcsimulation.py)
+### If you wanna try to read an OPC DA variables with python, you can use a Matrikon OPC Simulator and try with "opcsimulation.py" script [Here](https://github.com/squidmoron/Read-OPC-DA-from-Python3/blob/main/PythonOPCDA/opcsimulation.py)
 
 
 ### To communication from python to SQL Server you need to install PyODBC library
