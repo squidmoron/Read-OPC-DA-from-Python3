@@ -27,7 +27,7 @@
 
 ### To communication from python to SQL Server you need to install PyODBC library
 
-1) copy file "pyodbc-4.0.30-cp39-cp39-win32.whl" you can search on folder [Python odbc library](https://github.com/squidmoron/Read-OPC-DA-from-Python3/tree/main/Python%20odbc%20library)
+1) copy file "pyodbc-4.0.30-cp39-cp39-win32.whl" you can find on repo [Python odbc library](https://github.com/squidmoron/Read-OPC-DA-from-Python3/tree/main/Python%20odbc%20library)
 
 2) open shell and run : pip install <PATH>\pyodbc-4.0.30-cp39-cp39-win32.whl
 
@@ -36,4 +36,5 @@
 	Successfully installed pyodbc-4.0.30
 
 4) You got your library for pyodbc
-
+	
+### For python script to Insert, Update, and Select Database from MS SQL, you can find script [Here]()
