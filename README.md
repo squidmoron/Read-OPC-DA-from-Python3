@@ -12,7 +12,7 @@
 
 4) DOWNLOAD AND REGISTER THE DLL:  [Download Here](http://www.gray-box.net/download_daawrapper.php)
    
-   Then Write a Command: regsvr32 gbda_aut.dll  [From OPC DA Auto Wrapper](OPC DA Auto Wrapper)
+   Then Write a Command: regsvr32 gbda_aut.dll  [From OPC DA Auto Wrapper](https://github.com/squidmoron/Read-OPC-DA-from-Python3/tree/main/OPC%20DA%20Wrapper)
 
 5) INSTALL OPENOPC: pip3 install OpenOPC-Python3x
    if pip need to upgrade : pip install --upgrade pip
