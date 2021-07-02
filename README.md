@@ -11,7 +11,8 @@
 3) INSTALL PYWIN32 : [Download Here](https://github.com/mhammond/pywin32/releases)
 
 4) DOWNLOAD AND REGISTER THE DLL:  [Download Here](http://www.gray-box.net/download_daawrapper.php)
-   Command: regsvr32 gbda_aut.dll  (OPC DA Auto Wrapper)
+   
+   Then Write a Command: regsvr32 gbda_aut.dll  [From OPC DA Auto Wrapper](OPC DA Auto Wrapper)
 
 5) INSTALL OPENOPC: pip3 install OpenOPC-Python3x
    if pip need to upgrade : pip install --upgrade pip
