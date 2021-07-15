@@ -128,6 +128,13 @@ def readalldata() :
 		AVG_CTLegAssy=readOPC('PLC_GW3..AVG_CTLegAssy')
 		AVG_CTNeckConnector=readOPC('PLC_GW3..AVG_CTNeckConnector')
 		AVG_CTUnload=readOPC('PLC_GW3..AVG_CTUnload')
+		#print(AVG_CTArmAssy.value)
+		#print(AVG_CTDipping.value)
+		#print(AVG_CTFrontTorso.value)
+		#print(AVG_CTHipConnector.value)
+		#print(AVG_CTLegAssy.value)
+		#print(AVG_CTNeckConnector.value)
+		#print(AVG_CTUnload.value)
 
 		DT_CountDipping=readOPC('PLC_GW3..DT_CountDipping')
 		DT_CountLeg=readOPC('PLC_GW3..DT_CountLeg')
@@ -225,7 +232,12 @@ def checktime():
 
 #------------------------------------------------------------------------
 
+def updatesqldb():
+	cursor.execute("UPDATE [TA].[dbo].[avg_ct] SET avg_ct_ft ="+str(AVG_CTFrontTorso.value)+",avg_ct_hip ="+str(AVG_CTHipConnector.value)+" ,avg_ct_arm ="+str(AVG_CTArmAssy.value)+" ,avg_ct_neck ="+str(AVG_CTNeckConnector.value)+" , avg_ct_dipping ="+str(AVG_CTDipping.value)+" , avg_ct_leg ="+ str(AVG_CTLegAssy.value) +" ,avg_ct_unload ="+ str(AVG_CTUnload.value) +" ;")
+	conn.commit()
+
 while 1:
 	#print("success")
 	readalldata()
+	updatesqldb()
 	checktime()
